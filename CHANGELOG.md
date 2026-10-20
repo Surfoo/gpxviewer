@@ -17,6 +17,7 @@ Complete rewrite: Leaflet and plain JavaScript are replaced by OpenLayers, TypeS
 - Popup with type, size, owner profile link, formatted date, difficulty/terrain and coordinates in degrees and decimal minutes, copied to the clipboard on click.
 - Track and route display (`<trk>` and `<rte>`), included when fitting the map to the data.
 - Optional geocode labels and perimeters around caches, and user geolocation.
+- Distance scale on the map (metric).
 - Tooltip with the cache name on hover.
 - Basemap picker on the map with thumbnails: OSM Standard, OSM Humanitarian, CyclOSM, OpenTopoMap and Satellite (Esri).
 - Display settings saved in the browser (`localStorage`): language, basemap, geocode labels, perimeters and sidebar state. Filters are not saved.

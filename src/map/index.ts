@@ -1,5 +1,5 @@
 import { Maximize, Minimize, Minus, Plus } from "lucide";
-import { defaults as defaultControls, FullScreen, Zoom } from "ol/control";
+import { defaults as defaultControls, FullScreen, ScaleLine, Zoom } from "ol/control";
 import VectorLayer from "ol/layer/Vector";
 import OlMap from "ol/Map";
 import type Overlay from "ol/Overlay";
@@ -36,6 +36,7 @@ export const createMap = (targetId: string, overlay?: Overlay): OlMap => {
       rotate: false,
       attribution: true,
     }).extend([
+      new ScaleLine({ units: "metric" }),
       new Zoom({
         zoomInLabel: iconLabel(Plus),
         zoomOutLabel: iconLabel(Minus),

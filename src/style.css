@@ -715,3 +715,17 @@ body[data-panel="collapsed"] .panel-toggle-floating {
 .no-anim * {
   transition: none !important;
 }
+
+/* bottom right, above the attribution (bottom left is under the sidebar) */
+.ol-scale-line {
+  left: auto;
+  right: 8px;
+  bottom: 32px;
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.85);
+}
+
+.ol-scale-line-inner {
+  border-color: var(--muted);
+  color: var(--text);
+}
