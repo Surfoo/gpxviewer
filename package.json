@@ -24,8 +24,8 @@
   },
   "dependencies": {
     "geocaching-base-converter": "^1.0.4",
+    "lucide": "^1.60.0",
     "ol": "^10.7.0",
-    "remixicon": "^4.7.0",
     "tslib": "^2.8.1"
   },
   "devDependencies": {

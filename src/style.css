@@ -1,5 +1,4 @@
 @import url("https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600&display=swap");
-@import "remixicon/fonts/remixicon.css";
 
 :root {
   color-scheme: light;
@@ -27,10 +26,6 @@ body {
     radial-gradient(circle at 30% 20%, rgba(33, 150, 83, 0.12), transparent 32%),
     radial-gradient(circle at 80% 0%, rgba(255, 193, 7, 0.12), transparent 28%), var(--bg);
   color: var(--text);
-}
-
-.is-loading {
-  visibility: hidden;
 }
 
 .page {
@@ -67,32 +62,31 @@ h1 {
 .layout {
   position: relative;
   display: grid;
-  grid-template-columns: 1fr;
+  grid-template-columns: minmax(0, 1fr);
   grid-template-rows: 1fr;
   flex: 1;
-  min-height: 100vh;
+  height: 100vh;
 }
 
 .panel {
   position: absolute;
-  top: 8px;
-  left: 8px;
-  width: min(320px, 90vw);
+  top: 0;
+  left: 0;
   background: var(--panel);
-  border: 1px solid var(--border);
-  border-radius: 4px;
-  padding: 10px 14px 14px;
+  border: none;
+  border-right: 1px solid var(--border);
+  border-radius: 0;
+  padding: 8px 12px 10px;
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  gap: 8px;
   box-shadow: 0 20px 50px rgba(0, 0, 0, 0.08);
   min-height: 0;
-  transition:
-    transform 500ms ease,
-    opacity 500ms ease;
+  width: 340px;
+  transition: transform 300ms ease;
   pointer-events: auto;
   z-index: 6;
-  max-height: calc(100vh - 16px);
+  height: 100vh;
   overflow: auto;
 }
 
@@ -128,18 +122,32 @@ h1 {
 .panel-actions {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 4px;
 }
 
 .panel-body {
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  gap: 8px;
+}
+
+.panel-body .small {
+  padding: 8px 10px;
+  font-size: 0.85rem;
+}
+
+.checkbox-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
 }
 
 .panel-footer {
-  margin-top: 8px;
-  padding-top: 10px;
+  position: sticky;
+  bottom: -10px;
+  margin-top: auto;
+  padding: 10px 0;
+  background: var(--panel);
   border-top: 1px solid var(--border);
   text-align: center;
 }
@@ -161,19 +169,78 @@ h1 {
   color: var(--accent);
 }
 
+.type-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.group-toggle {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  border: 2px solid var(--border);
+  background: var(--group-color, var(--muted));
+  cursor: pointer;
+  padding: 0;
+  transition: opacity 120ms ease, transform 120ms ease, box-shadow 120ms ease;
+}
+
+.type-group[data-enabled="false"] .group-toggle {
+  opacity: 0.4;
+}
+
+.group-toggle:hover,
+.group-toggle:focus-visible {
+  box-shadow: 0 0 0 2px rgba(33, 150, 83, 0.2);
+}
+
+.type-icons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.type-icon {
+  width: 36px;
+  height: 36px;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  background: #fff;
+  transition: opacity 120ms ease, transform 120ms ease;
+}
+
+.type-icon img {
+  width: 32px;
+  height: 32px;
+  display: block;
+}
+
+.type-icon[data-enabled="false"] {
+  opacity: 0.35;
+}
+
+.type-icon:hover,
+.type-icon:focus-visible {
+  opacity: 0.5;
+}
+
 .layout[data-panel="collapsed"] #import-panel {
-  transform: translateX(-110%);
+  transform: translateX(-100%);
   pointer-events: none;
 }
 
 .input-group {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 4px;
 }
 
 .checkbox {
   display: flex;
+  flex-direction: row-reverse;
+  justify-content: space-between;
   align-items: center;
   gap: 8px;
   font-size: 0.92rem;
@@ -189,7 +256,7 @@ input[type="file"],
 input[type="url"],
 select {
   width: 100%;
-  padding: 12px;
+  padding: 8px;
   border-radius: 4px;
   border: 1px solid var(--border);
   background: #f8fbf7;
@@ -204,7 +271,7 @@ input::placeholder {
   appearance: none;
   border: none;
   border-radius: 4px;
-  padding: 12px 14px;
+  padding: 8px 12px;
   font-weight: 600;
   cursor: pointer;
   color: #ffffff;
@@ -284,12 +351,9 @@ body[data-panel="collapsed"] .panel-toggle-floating {
   grid-row: 1;
   grid-column: 1;
   height: 100vh;
-  min-height: 100vh;
+  min-height: 0;
   background: var(--panel);
-  border: 1px solid var(--border);
-  border-radius: 4px;
   overflow: hidden;
-  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.12);
 }
 
 #map {
@@ -330,6 +394,13 @@ body[data-panel="collapsed"] .panel-toggle-floating {
   color: var(--muted);
   font-size: 0.92rem;
   backdrop-filter: blur(12px);
+  transition: left 300ms ease;
+}
+
+@media (min-width: 641px) {
+  .layout[data-panel="expanded"] .status {
+    left: 356px;
+  }
 }
 
 .status[data-state="error"] {
@@ -462,17 +533,32 @@ body[data-panel="collapsed"] .panel-toggle-floating {
   border: none;
 }
 
-@media (max-width: 1024px) {
-  .layout {
+
+@media (max-width: 640px) {
+  .layout,
+  .layout[data-panel="collapsed"] {
     grid-template-columns: 1fr;
+    grid-template-rows: auto 60vh;
+    height: auto;
+  }
+
+  .panel {
+    position: relative;
+    width: auto;
+    height: auto;
+    border-right: none;
+  }
+
+  .layout[data-panel="collapsed"] #import-panel {
+    display: none;
   }
 
   .map-shell {
-    min-height: 440px;
+    grid-row: 2;
+    grid-column: 1;
+    height: 60vh;
   }
-}
 
-@media (max-width: 640px) {
   header {
     padding: 10px 12px;
   }
@@ -488,4 +574,139 @@ body[data-panel="collapsed"] .panel-toggle-floating {
     max-width: calc(100% - 32px);
     text-align: center;
   }
+}
+
+.range-filter {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* toggle switch on top of the native checkbox */
+.checkbox input[type="checkbox"] {
+  appearance: none;
+  flex: none;
+  position: relative;
+  width: 36px;
+  height: 20px;
+  margin: 0;
+  border-radius: 999px;
+  background: #c9d3c4;
+  cursor: pointer;
+  transition: background-color 160ms ease;
+}
+
+.checkbox input[type="checkbox"]::after {
+  content: "";
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+  transition: transform 160ms ease;
+}
+
+.checkbox input[type="checkbox"]:checked {
+  background: var(--accent);
+}
+
+.checkbox input[type="checkbox"]:checked::after {
+  transform: translateX(16px);
+}
+
+.checkbox input[type="checkbox"]:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.ol-basemap-control {
+  position: absolute;
+  top: 184px;
+  right: 8px;
+  z-index: 10;
+}
+
+.basemap-picker {
+  position: absolute;
+  top: 0;
+  right: calc(100% + 6px);
+  display: grid;
+  grid-template-columns: repeat(3, 76px);
+  gap: 6px;
+  padding: 8px;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.18);
+}
+
+.basemap-picker[hidden] {
+  display: none;
+}
+
+.ol-basemap-control .basemap-item {
+  all: unset;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  padding: 3px;
+  border: 2px solid transparent;
+  border-radius: 4px;
+  font-size: 0.7rem;
+  line-height: 1.1;
+  text-align: center;
+  color: var(--text);
+  cursor: pointer;
+}
+
+.basemap-item img {
+  width: 64px;
+  height: 64px;
+  border-radius: 3px;
+  object-fit: cover;
+}
+
+.ol-basemap-control .basemap-item.is-active {
+  border-color: var(--accent);
+}
+
+.ol-basemap-control .basemap-item:focus-visible {
+  outline: 2px solid var(--accent);
+}
+
+.panel-footer .input-group {
+  margin-bottom: 8px;
+  text-align: left;
+}
+
+.ol-control button svg,
+.icon-button svg {
+  display: block;
+  margin: auto;
+}
+
+#search {
+  width: 100%;
+  padding: 8px;
+  border-radius: 4px;
+  border: 1px solid var(--border);
+  background: #f8fbf7;
+  color: var(--text);
+}
+
+.copy-coords {
+  all: unset;
+  color: var(--accent-strong);
+  cursor: pointer;
+  text-decoration: underline dotted;
+}
+
+.meta-wide {
+  grid-column: 1 / -1;
+  white-space: nowrap;
 }

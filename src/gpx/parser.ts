@@ -1,9 +1,9 @@
 import Feature from "ol/Feature";
+import LineString from "ol/geom/LineString";
 import Point from "ol/geom/Point";
 import { fromLonLat } from "ol/proj";
-
-import type { CacheDetails } from "@/types";
 import { isSupportedCacheType } from "@/map/styles";
+import type { CacheDetails } from "@/types";
 
 const parseCacheDetails = (wpt: Element): CacheDetails | null => {
   const lat = parseFloat(wpt.getAttribute("lat") ?? "");
@@ -77,4 +77,28 @@ export const gpxToFeatures = (gpxText: string, sourceLabel: string): Feature<Poi
       feature.setId(details.code || `${sourceLabel}-${index}`);
       return feature;
     });
+};
+
+// <trk> segments and <rte> routes, one LineString per segment
+export const gpxToTracks = (gpxText: string): Feature<LineString>[] => {
+  const xml = new DOMParser().parseFromString(gpxText, "text/xml");
+  const toLine = (points: Element[]): Feature<LineString> | null => {
+    const coords = points
+      .map((pt) => [
+        parseFloat(pt.getAttribute("lon") ?? ""),
+        parseFloat(pt.getAttribute("lat") ?? ""),
+      ])
+      .filter(([lon, lat]) => Number.isFinite(lon) && Number.isFinite(lat))
+      .map(([lon, lat]) => fromLonLat([lon, lat]));
+    return coords.length > 1 ? new Feature(new LineString(coords)) : null;
+  };
+  const lines = [
+    ...Array.from(xml.getElementsByTagName("trkseg")).map((seg) =>
+      toLine(Array.from(seg.getElementsByTagName("trkpt"))),
+    ),
+    ...Array.from(xml.getElementsByTagName("rte")).map((rte) =>
+      toLine(Array.from(rte.getElementsByTagName("rtept"))),
+    ),
+  ];
+  return lines.filter((line): line is Feature<LineString> => line !== null);
 };

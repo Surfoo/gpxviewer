@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 36 36" id="type_ape">
+		<ellipse id="marker_gc" cx="17.769" cy="18.001" rx="14.011" ry="14.011" fill="#fff" stroke="#383838" stroke-width=".75"/>
+		<circle id="background" fill="#afb42b" cx="12" cy="12" r="12" transform="translate(6.3 6.3) scale(0.975)"/>
+		<g transform="translate(7,7) scale(0.916666666667)">
+			<g transform="translate(-.1)" dominant-baseline="middle" fill="#fff" aria-label="APE">
+				<path d="m7.696 15.696h1.856l-2.2293-7.392h-2.1227l-2.2293 7.392h1.8133l0.37333-1.5893h2.1653zm-2.24-2.8587 0.77867-3.264 0.77867 3.264z"/>
+				<path d="m12.485 8.304h-2.3893v7.392h1.7493v-2.464h0.8c1.7067 0 2.9227-0.8 2.9227-2.5173 0-1.6213-1.1733-2.4107-3.0827-2.4107zm0.010667 3.6693h-0.65067v-2.4213h0.61867c0.864 0 1.3013 0.37333 1.3013 1.1627 0 0.928-0.48 1.2587-1.2693 1.2587z"/>
+				<path d="m21.029 8.304h-4.5333v7.392h4.5333v-1.2587h-2.784v-1.888h2.272v-1.2267h-2.272v-1.7707h2.6027z"/>
+			</g>
+			
+		</g>
+	</svg>
+	
+	

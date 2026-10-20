@@ -1,13 +1,15 @@
-import Geolocation from "ol/Geolocation";
-import type { default as OlMap } from "ol/Map";
+import { LocateFixed } from "lucide";
 import Control from "ol/control/Control";
 import Feature from "ol/Feature";
-import { Circle as CircleStyle, Fill, Stroke, Style } from "ol/style";
-import VectorLayer from "ol/layer/Vector";
-import VectorSource from "ol/source/Vector";
+import Geolocation from "ol/Geolocation";
 import { Point } from "ol/geom";
+import VectorLayer from "ol/layer/Vector";
+import type { default as OlMap } from "ol/Map";
+import VectorSource from "ol/source/Vector";
+import { Circle as CircleStyle, Fill, Stroke, Style } from "ol/style";
 import { t } from "@/i18n";
 import type { SetStatusFn } from "@/types";
+import { icon } from "@/ui/icons";
 
 class LocateControl extends Control {
   #button: HTMLButtonElement;
@@ -18,7 +20,7 @@ class LocateControl extends Control {
     button.type = "button";
     button.title = label;
     button.setAttribute("aria-label", label);
-    button.textContent = "⌖";
+    button.append(icon(LocateFixed));
 
     const element = document.createElement("div");
     element.className = "ol-control ol-custom-control ol-unselectable";

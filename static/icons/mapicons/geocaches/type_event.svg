@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 36 36" id="type_event">
+		<ellipse id="marker_gc" cx="17.769" cy="18.001" rx="14.011" ry="14.011" fill="#fff" stroke="#383838" stroke-width=".75"/>
+		<circle id="background" fill="#d32f2f" cx="12" cy="12" r="12" transform="translate(6.3 6.3) scale(0.975)"/>
+		<g transform="translate(7,7) scale(0.916666666667)">
+			<g transform="translate(3.3,2.5)">
+				<path fill="#fff" d="M12,3C17.5,3 22,6.58 22,11C22,15.42 17.5,19 12,19C10.76,19 9.57,18.82 8.47,18.5C5.55,21 2,21 2,21C4.33,18.67 4.7,17.1 4.75,16.5C3.05,15.07 2,13.13 2,11C2,6.58 6.5,3 12,3M17,12V10H15V12H17M13,12V10H11V12H13M9,12V10H7V12H9Z" transform="scale(0.75)"/>
+			</g>
+		</g>
+	</svg>
+	

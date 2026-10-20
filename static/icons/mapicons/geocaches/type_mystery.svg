@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 36 36" id="type_mystery">
+		<ellipse id="marker_gc" cx="17.769" cy="18.001" rx="14.011" ry="14.011" fill="#fff" stroke="#383838" stroke-width=".75"/>
+		<circle id="background" fill="#303f9f" cx="12" cy="12" r="12" transform="translate(6.3 6.3) scale(0.975)"/>
+		<g transform="translate(7,7) scale(0.916666666667)">
+			<g dominant-baseline="middle" fill="#fff" aria-label="?" transform="translate(-0.15,0)">
+				<path d="m12.648 4.221c-2.266 0-3.894 0.88-5.148 2.354l2.222 1.716c0.792-0.902 1.672-1.342 2.574-1.342 0.968 0 1.54 0.462 1.54 1.254 0 1.804-3.498 1.54-3.498 5.346v0.682h3.168v-0.55c0-2.464 3.96-2.222 3.96-5.786 0-1.958-1.606-3.674-4.818-3.674zm-0.682 12.012c-1.1 0-1.98 0.902-1.98 1.98 0 1.1 0.88 2.002 1.98 2.002s1.98-0.902 1.98-2.002c0-1.078-0.88-1.98-1.98-1.98z"/>
+			</g>
+			
+		</g>
+	</svg>
+	

@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 36 36" id="type_wherigo">
+		<ellipse id="marker_gc" cx="17.769" cy="18.001" rx="14.011" ry="14.011" fill="#fff" stroke="#383838" stroke-width=".75"/>
+		<circle id="background" fill="#303f9f" cx="12" cy="12" r="12" transform="translate(6.3 6.3) scale(0.975)"/>
+		<g transform="translate(7,7) scale(0.916666666667)">
+			<path id="ring" d="m12 3.2051c-2.2543 1e-7 -4.5081 0.85775-6.2227 2.5723-3.429 3.429-3.429 9.0163 0 12.445 3.429 3.429 9.0163 3.429 12.445 0 2.9444-2.9444 3.3578-7.479 1.2461-10.873l-0.98242 1.998c1.0396 2.5328 0.52956 5.5427-1.5332 7.6055-2.7431 2.7431-7.1632 2.7431-9.9062 0s-2.7431-7.1632 0-9.9062c2.0626-2.0626 5.0724-2.5747 7.6055-1.5352l1.998-0.98242c-1.4176-0.88182-3.0337-1.3242-4.6504-1.3242z" fill="#fff" style="-inkscape-stroke:none"/>
+			<path id="arrow" d="m6.8379 11.362 11.409-5.6096-5.6096 11.409z" fill="#ffffff"/>
+		</g>
+	</svg>
+	

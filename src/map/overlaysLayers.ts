@@ -1,8 +1,8 @@
-import { Fill, Stroke, Style, Text } from "ol/style";
+import Feature from "ol/Feature";
+import { Circle as CircleGeometry, type Point } from "ol/geom";
 import VectorLayer from "ol/layer/Vector";
 import VectorSource from "ol/source/Vector";
-import Feature from "ol/Feature";
-import { Circle as CircleGeometry, Point } from "ol/geom";
+import { Fill, Stroke, Style, Text } from "ol/style";
 import type { CacheFeature } from "@/types";
 
 const metersPerMile = 1609.344;
@@ -34,10 +34,7 @@ const labelStyle = (text: string): Style =>
 const perimeterStroke = new Stroke({ color: "rgba(209, 67, 67, 0.9)", width: 2 });
 const perimeterFill = new Fill({ color: "rgba(209, 67, 67, 0.5)" });
 
-export const updateLabels = (
-  layer: VectorLayer<VectorSource>,
-  features: CacheFeature[],
-): void => {
+export const updateLabels = (layer: VectorLayer<VectorSource>, features: CacheFeature[]): void => {
   const source = layer.getSource();
   if (!source) return;
   source.clear();

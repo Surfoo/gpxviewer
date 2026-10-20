@@ -1,61 +1,86 @@
 import { Circle as CircleStyle, Fill, Icon, Stroke, Style } from "ol/style";
 import type { CacheFeature } from "@/types";
 
-const typeToIconId: Record<string, string> = {
-  "traditional cache": "2",
-  traditional: "2",
-  "multi-cache": "3",
-  multi: "3",
-  "virtual cache": "4",
-  virtual: "4",
-  "letterbox hybrid": "5",
-  letterbox: "5",
-  "event cache": "6",
-  event: "6",
-  "lost and found event caches": "6",
-  "unknown cache": "8",
-  "mystery cache": "8",
-  mystery: "8",
-  "project ape cache": "9",
-  "project a.p.e.": "9",
-  "webcam cache": "11",
-  "locationless (reverse) cache": "12",
-  "cache in trash out event": "13",
-  earthcache: "137",
-  "mega-event cache": "453",
-  "mega-event": "453",
-  "gps adventures exhibit": "1304",
-  "wherigo cache": "1858",
-  wherigo: "1858",
-  "community celebration event": "3653",
-  "geocaching hq": "3773",
-  "groundspeak hq": "3773",
-  "geocaching hq celebration": "3774",
-  "groundspeak lost and found celebration": "3774",
-  "geocaching hq block party": "4738",
-  "groundspeak block party": "4738",
-  "giga-event cache": "7005",
-  "giga-event": "7005",
+export type CacheIconConfig = { file: string; label: string };
+
+export const typeToIconFile: Record<string, CacheIconConfig> = {
+  "traditional cache": { file: "type_traditional.png", label: "Traditional Cache" },
+  "multi-cache": { file: "type_multi.png", label: "Multi-cache" },
+  "virtual cache": { file: "type_virtual.png", label: "Virtual Cache" },
+  "letterbox hybrid": { file: "type_letterbox.png", label: "Letterbox Hybrid" },
+  "event cache": { file: "type_event.png", label: "Event Cache" },
+  "unknown cache": { file: "type_mystery.png", label: "Mystery Cache" },
+  "project ape cache": { file: "type_ape.png", label: "Project APE Cache" },
+  "webcam cache": { file: "type_webcam.png", label: "Webcam Cache" },
+  "cache in trash out event": { file: "type_cito.png", label: "Cache In Trash Out Event" },
+  earthcache: { file: "type_earth.png", label: "Earthcache" },
+  "mega-event cache": { file: "type_mega.png", label: "Mega-Event Cache" },
+  "gps adventures exhibit": { file: "type_maze.png", label: "GPS Adventures Exhibit" },
+  "wherigo cache": { file: "type_wherigo.png", label: "Wherigo Cache" },
+  "lost and found event caches": {
+    file: "type_specialevent.png",
+    label: "Lost and Found Event Caches",
+  },
+  "groundspeak hq": { file: "type_hq.png", label: "Groundspeak HQ" },
+  "groundspeak lost and found celebration": {
+    file: "type_specialevent.png",
+    label: "Groundspeak Lost and Found Celebration",
+  },
+  "community celebration event": {
+    file: "type_specialevent.png",
+    label: "Community Celebration Event",
+  },
+  "groundspeak block party": { file: "type_specialevent.png", label: "Groundspeak Block Party" },
+  "giga-event cache": { file: "type_giga.png", label: "Giga-Event Cache" },
 };
 
-const defaultIconId = "8"; // mystery/unknown
+const defaultIconFile = "type_unknown.png";
 const styleCache = new Map<string, Style | Style[]>();
+let allowedTypes: Set<string> | null = null;
 
 export const isSupportedCacheType = (cacheType: string | undefined): boolean => {
   if (!cacheType) return false;
   const normalized = cacheType.trim().toLowerCase();
-  return Boolean(typeToIconId[normalized]);
+  return Boolean(typeToIconFile[normalized]);
+};
+
+export const setAllowedTypes = (types: Set<string> | null): void => {
+  allowedTypes = types;
+};
+
+let hideFound = false;
+export const setHideFound = (value: boolean): void => {
+  hideFound = value;
+};
+
+export type RangeKey = "difficulty" | "terrain";
+const ranges: Record<RangeKey, [number, number]> = { difficulty: [1, 5], terrain: [1, 5] };
+
+export const setRange = (key: RangeKey, min: number, max: number): void => {
+  ranges[key] = [min, max];
+};
+
+// unknown ("?") difficulty/terrain stays visible
+export const isFeatureVisible = (feature: CacheFeature): boolean => {
+  const type = (feature.get<string>("type") ?? "Unknown Cache").trim().toLowerCase();
+  if (allowedTypes && !allowedTypes.has(type)) return false;
+  if (hideFound && feature.get<boolean>("found")) return false;
+  return (Object.keys(ranges) as RangeKey[]).every((key) => {
+    const value = Number.parseFloat(feature.get<string>(key) ?? "");
+    return Number.isNaN(value) || (value >= ranges[key][0] && value <= ranges[key][1]);
+  });
 };
 
 const iconSrcForType = (cacheType: string): string => {
   const normalized = cacheType.trim().toLowerCase();
-  const matched = typeToIconId[normalized] ?? defaultIconId;
+  const matched = typeToIconFile[normalized]?.file ?? defaultIconFile;
   const base = import.meta.env.BASE_URL ?? "/";
-  return `${base}icons/mapicons/${matched}.png`;
+  return `${base}icons/mapicons/geocaches/${matched}`;
 };
 
 export const getFeatureStyle = (feature: CacheFeature): Style | Style[] => {
   const type = feature.get<string>("type") ?? "Unknown Cache";
+  if (!isFeatureVisible(feature)) return [];
   const found = feature.get<boolean>("found") ?? false;
   const iconSrc = iconSrcForType(type);
   const key = `${iconSrc}-${found ? "found" : "fresh"}`;
@@ -65,8 +90,7 @@ export const getFeatureStyle = (feature: CacheFeature): Style | Style[] => {
   const iconStyle = new Style({
     image: new Icon({
       src: iconSrc,
-      anchor: [0.5, 0.5],
-      scale: 1,
+      anchor: [0.5, 1],
     }),
   });
 

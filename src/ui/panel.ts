@@ -1,3 +1,6 @@
+import { PanelLeftClose, PanelLeftOpen } from "lucide";
+import { icon } from "./icons";
+
 type PanelOptions = {
   layout: HTMLElement | null;
   toggle: HTMLButtonElement | null;
@@ -11,15 +14,15 @@ export const initPanelToggle = ({ layout, toggle, floatingToggle, onChange }: Pa
     layout.dataset.panel = collapsed ? "collapsed" : "expanded";
     document.body.dataset.panel = collapsed ? "collapsed" : "expanded";
 
-    const icon = collapsed ? "unfold" : "fold";
+    const node = collapsed ? PanelLeftOpen : PanelLeftClose;
     const label = collapsed ? "Afficher le panneau d'import" : "Masquer le panneau d'import";
 
-    toggle.innerHTML = `<i class="ri-sidebar-${icon}-line" aria-hidden="true"></i>`;
+    toggle.replaceChildren(icon(node));
     toggle.setAttribute("aria-expanded", String(!collapsed));
     toggle.setAttribute("aria-label", label);
 
     if (floatingToggle) {
-      floatingToggle.innerHTML = `<i class="ri-sidebar-${icon}-line" aria-hidden="true"></i>`;
+      floatingToggle.replaceChildren(icon(node));
       floatingToggle.setAttribute("aria-expanded", String(!collapsed));
       floatingToggle.setAttribute("aria-label", label);
     }

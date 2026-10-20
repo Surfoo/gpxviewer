@@ -26,6 +26,7 @@ export type CacheDetails = {
 export type BaseLayer = {
   id: string;
   title: string;
+  thumb: string;
   layer: TileLayer;
 };
 
