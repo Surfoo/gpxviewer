@@ -8,7 +8,7 @@ import type Point from "ol/geom/Point";
 import Overlay from "ol/Overlay";
 import type { Pixel } from "ol/pixel";
 import { gpxToFeatures, gpxToTracks } from "@/gpx/parser";
-import { baseLayers, createMap, trackLayer, trackSource, vectorLayer, vectorSource } from "@/map";
+import { baseLayers, createMap, trackSource, vectorLayer, vectorSource } from "@/map";
 import { createBaseLayerControl } from "@/map/baseLayerControl";
 import { createLocateControl, setupGeolocation } from "@/map/geolocation";
 import { createInfoOverlay } from "@/map/overlays";
@@ -261,17 +261,16 @@ displayPerimetersCheckbox?.addEventListener("change", () => {
   refreshOverlayLayers();
 });
 
-// topmost cache under the pixel, ignoring tracks, labels and perimeters
+// topmost cache under the pixel; only the cache layer counts (not tracks, labels, perimeters, position)
 const cacheAt = (pixel: Pixel): CacheFeature | null => {
   let found: CacheFeature | null = null;
   map.forEachFeatureAtPixel(
     pixel,
     (feature) => {
-      if (feature.getGeometry()?.getType() === "Circle" || feature.get("label")) return false;
       found = feature as CacheFeature;
       return true;
     },
-    { hitTolerance: 5, layerFilter: (layer) => layer !== trackLayer },
+    { hitTolerance: 5, layerFilter: (layer) => layer === vectorLayer },
   );
   return found;
 };
