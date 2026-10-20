@@ -48,6 +48,7 @@ Run commands from the repo root. Dev and build use the base path `/gpxviewer/` (
 - Privacy: GPX files are processed only in the browser. Never upload them or add features that need them server-side (e.g. share-by-URL with the content).
 - Layers: caches are in `vectorLayer`; tracks (`trackLayer`), labels, perimeters and geolocation each have their own source. Map interactions (`cacheAt` in `main.ts`) only consider `vectorLayer`, so a new layer must never be treated as a cache.
 - Filtering: all cache filters go through `isFeatureVisible` in `src/map/styles.ts`; after changing one, refresh labels/perimeters (`refreshOverlayLayers`) and call `vectorLayer.changed()`. Type/difficulty/terrain/hide-found filters are deliberately not persisted; display settings (basemap, labels, perimeters, sidebar) are, via `src/ui/settings.ts`.
+- Credits: every new dependency, data source or third-party asset must be added to the list in `src/ui/about.ts` (name, official site, license) in the same change.
 - i18n: every new string needs a key in all five locales (en, fr, de, es, it) in `src/i18n/translations.ts`.
 - Icons: use Lucide through `src/ui/icons.ts` (`icon` for DOM, `iconLabel` for OpenLayers control labels, which only accept `HTMLElement`). Lucide has no brand icons, so the GitHub logo is an inline SVG.
 - Basemaps: tile URLs rot. Check a tile with `curl` before adding one, prefer sources without a key, and add a thumbnail in `static/icons/basemaps/`.

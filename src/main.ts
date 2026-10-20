@@ -13,6 +13,7 @@ import { createBaseLayerControl } from "@/map/baseLayerControl";
 import { createLocateControl, setupGeolocation } from "@/map/geolocation";
 import { createInfoOverlay } from "@/map/overlays";
 import type { CacheFeature } from "@/types";
+import { initAbout } from "@/ui/about";
 import { initI18nDom } from "@/ui/i18nDom";
 import { initPanelToggle } from "@/ui/panel";
 import { loadSettings, saveSetting } from "@/ui/settings";
@@ -424,6 +425,7 @@ setTimeout(syncMapSize, 100);
 
 renderTypeFilter();
 updateAllowedTypesFromUI();
+initAbout();
 
 // difficulty/terrain: one min/max select pair per .range-filter
 document.querySelectorAll<HTMLElement>(".range-filter").forEach((row) => {

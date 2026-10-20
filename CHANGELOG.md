@@ -17,6 +17,7 @@ Complete rewrite: Leaflet and plain JavaScript are replaced by OpenLayers, TypeS
 - Popup with type, size, owner profile link, formatted date, difficulty/terrain and coordinates in degrees and decimal minutes, copied to the clipboard on click.
 - Track and route display (`<trk>` and `<rte>`), included when fitting the map to the data.
 - Optional geocode labels and perimeters around caches, and user geolocation.
+- About dialog (info icon in the sidebar) crediting the open source projects, data and assets used, with links to their official sites.
 - Distance scale on the map (metric).
 - Tooltip with the cache name on hover.
 - Basemap picker on the map with thumbnails: OSM Standard, OSM Humanitarian, CyclOSM, OpenTopoMap and Satellite (Esri).
@@ -27,6 +28,8 @@ Complete rewrite: Leaflet and plain JavaScript are replaced by OpenLayers, TypeS
 ### Changed
 
 - Icons now come from [Lucide](https://lucide.dev), including the map controls.
+- Found caches show the c:geo smiley badge instead of a green ring.
+- The GitHub link in the sidebar is an icon without text.
 - Waypoints that are not geocaches are ignored.
 - The dark theme was removed.
 - The page stays hidden until the interface is ready, to avoid a flash of unstyled content in development.

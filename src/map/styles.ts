@@ -1,4 +1,4 @@
-import { Circle as CircleStyle, Fill, Icon, Stroke, Style } from "ol/style";
+import { Icon, Style } from "ol/style";
 import type { CacheFeature } from "@/types";
 
 export type CacheIconConfig = { file: string; label: string };
@@ -99,15 +99,17 @@ export const getFeatureStyle = (feature: CacheFeature): Style | Style[] => {
     return iconStyle;
   }
 
-  const ringStyle = new Style({
-    image: new CircleStyle({
-      radius: 14,
-      stroke: new Stroke({ color: "rgba(16, 185, 129, 0.9)", width: 3 }),
-      fill: new Fill({ color: "rgba(16, 185, 129, 0.12)" }),
+  // smiley badge on the top right corner of the cache icon (displacement is [right, up] in px)
+  const foundStyle = new Style({
+    image: new Icon({
+      src: `${import.meta.env.BASE_URL ?? "/"}icons/mapicons/geocaches/found.svg`,
+      anchor: [0.5, 0.5],
+      displacement: [12, 30],
+      scale: 0.75,
     }),
   });
 
-  const styleArray: Style[] = [ringStyle, iconStyle];
+  const styleArray: Style[] = [iconStyle, foundStyle];
   styleCache.set(key, styleArray);
   return styleArray;
 };

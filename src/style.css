@@ -729,3 +729,78 @@ body[data-panel="collapsed"] .panel-toggle-floating {
   border-color: var(--muted);
   color: var(--text);
 }
+
+.footer-links {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+}
+
+/* beats the generic "#import-panel button" gradient */
+#import-panel .ghost-link {
+  margin: 0;
+  padding: 4px;
+  color: var(--muted);
+  border: none;
+  background: none;
+  box-shadow: none;
+  cursor: pointer;
+}
+
+#import-panel .ghost-link:hover,
+#import-panel .ghost-link:focus-visible {
+  color: var(--accent);
+}
+
+.about-dialog {
+  width: min(460px, calc(100vw - 32px));
+  max-height: calc(100vh - 32px);
+  padding: 20px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--panel);
+  color: var(--text);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.25);
+}
+
+.about-dialog::backdrop {
+  background: rgba(0, 0, 0, 0.4);
+}
+
+.about-dialog h2 {
+  margin: 0 0 8px;
+  font-size: 1.15rem;
+}
+
+.about-dialog h3 {
+  margin: 14px 0 4px;
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
+.about-dialog p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.92rem;
+}
+
+.about-dialog ul {
+  margin: 0;
+  padding-left: 18px;
+  font-size: 0.92rem;
+}
+
+.about-dialog a {
+  color: var(--accent-strong);
+}
+
+.about-dialog form {
+  margin-top: 16px;
+  text-align: right;
+}
+
+.about-dialog form button {
+  padding: 8px 14px;
+  border-radius: 4px;
+  cursor: pointer;
+}
