@@ -25,5 +25,8 @@ jobs:
       - name: Lint JavaScript with Biome
         run: npm run lint
 
+      - name: Unit tests (Vitest)
+        run: npm test
+
       - name: Build (Vite)
         run: npm run build
