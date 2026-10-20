@@ -5,10 +5,17 @@ type PanelOptions = {
   layout: HTMLElement | null;
   toggle: HTMLButtonElement | null;
   floatingToggle: HTMLButtonElement | null;
-  onChange?: () => void;
+  initialCollapsed?: boolean;
+  onChange?: (collapsed: boolean) => void;
 };
 
-export const initPanelToggle = ({ layout, toggle, floatingToggle, onChange }: PanelOptions) => {
+export const initPanelToggle = ({
+  layout,
+  toggle,
+  floatingToggle,
+  initialCollapsed = false,
+  onChange,
+}: PanelOptions) => {
   const setPanelState = (collapsed: boolean): void => {
     if (!layout || !toggle) return;
     layout.dataset.panel = collapsed ? "collapsed" : "expanded";
@@ -27,7 +34,7 @@ export const initPanelToggle = ({ layout, toggle, floatingToggle, onChange }: Pa
       floatingToggle.setAttribute("aria-label", label);
     }
 
-    onChange?.();
+    onChange?.(collapsed);
   };
 
   const handleToggle = (): void => {
@@ -38,7 +45,10 @@ export const initPanelToggle = ({ layout, toggle, floatingToggle, onChange }: Pa
   toggle?.addEventListener("click", handleToggle);
   floatingToggle?.addEventListener("click", handleToggle);
 
-  setPanelState(false);
+  // restore the saved state without playing the slide animation
+  layout?.classList.add("no-anim");
+  setPanelState(initialCollapsed);
+  requestAnimationFrame(() => requestAnimationFrame(() => layout?.classList.remove("no-anim")));
 
   return { setPanelState };
 };

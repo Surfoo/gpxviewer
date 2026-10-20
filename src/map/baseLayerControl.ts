@@ -4,7 +4,11 @@ import type { BaseLayer } from "@/types";
 import { icon } from "@/ui/icons";
 
 // Layers button; opens a thumbnail picker to the left of it.
-export const createBaseLayerControl = (layers: BaseLayer[], label: string): Control => {
+export const createBaseLayerControl = (
+  layers: BaseLayer[],
+  label: string,
+  onSelect?: (id: string) => void,
+): Control => {
   const element = document.createElement("div");
   element.className = "ol-control ol-basemap-control ol-unselectable";
 
@@ -29,6 +33,7 @@ export const createBaseLayerControl = (layers: BaseLayer[], label: string): Cont
     item.addEventListener("click", () => {
       for (const entry of layers) entry.layer.setVisible(entry.id === id);
       mark(id);
+      onSelect?.(id);
       setOpen(false);
     });
     picker.appendChild(item);

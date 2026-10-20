@@ -710,3 +710,8 @@ body[data-panel="collapsed"] .panel-toggle-floating {
   grid-column: 1 / -1;
   white-space: nowrap;
 }
+
+.no-anim,
+.no-anim * {
+  transition: none !important;
+}

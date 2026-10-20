@@ -4,19 +4,19 @@ import { defineConfig } from "vitest/config";
 export default defineConfig({
   root: "app",
   base: "/gpxviewer/",
-  publicDir: path.resolve(__dirname, "static"),
+  publicDir: path.resolve(import.meta.dirname, "static"),
   resolve: {
     alias: {
-      "@": path.resolve(__dirname, "src"),
+      "@": path.resolve(import.meta.dirname, "src"),
     },
   },
   server: {
     fs: {
-      allow: [path.resolve(__dirname)],
+      allow: [path.resolve(import.meta.dirname)],
     },
   },
   test: {
-    root: __dirname,
+    root: import.meta.dirname,
     environment: "jsdom",
     include: ["src/**/*.test.ts"],
   },

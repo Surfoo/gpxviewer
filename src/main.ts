@@ -15,6 +15,7 @@ import { createInfoOverlay } from "@/map/overlays";
 import type { CacheFeature } from "@/types";
 import { initI18nDom } from "@/ui/i18nDom";
 import { initPanelToggle } from "@/ui/panel";
+import { loadSettings, saveSetting } from "@/ui/settings";
 import { initState } from "@/ui/state";
 import { applyDocumentLanguage, t } from "./i18n";
 import {
@@ -50,6 +51,11 @@ const languageSelect = document.querySelector<HTMLSelectElement>("#language");
 
 const { setStatus, updateStats } = initState(statusBar, statsCount, vectorSource);
 
+const settings = loadSettings();
+if (baseLayers.some(({ id }) => id === settings.baseLayer)) {
+  for (const { id, layer } of baseLayers) layer.setVisible(id === settings.baseLayer);
+}
+
 const infoOverlay = createInfoOverlay();
 const map = createMap("map", infoOverlay.overlay);
 const geolocation = setupGeolocation(map, (message, isError) => setStatus(message, isError));
@@ -58,7 +64,9 @@ const locateControl = createLocateControl(() => {
   geolocation.locate();
 }, t("btn.locate"));
 map.addControl(locateControl);
-map.addControl(createBaseLayerControl(baseLayers, t("label.baseLayer")));
+map.addControl(
+  createBaseLayerControl(baseLayers, t("label.baseLayer"), (id) => saveSetting("baseLayer", id)),
+);
 const labelLayer = createLabelLayer();
 const perimeterLayer = createPerimeterLayer();
 map.addLayer(perimeterLayer);
@@ -122,7 +130,11 @@ initPanelToggle({
   layout,
   toggle: togglePanelButton,
   floatingToggle: togglePanelFloatingButton,
-  onChange: syncMapSize,
+  initialCollapsed: settings.panelCollapsed,
+  onChange: (collapsed) => {
+    saveSetting("panelCollapsed", collapsed);
+    syncMapSize();
+  },
 });
 
 const fitToData = (): boolean => {
@@ -237,8 +249,17 @@ searchInput?.addEventListener("keydown", (event) => {
   infoOverlay.render(match, coordinate);
 });
 
-displayLabelsCheckbox?.addEventListener("change", refreshOverlayLayers);
-displayPerimetersCheckbox?.addEventListener("change", refreshOverlayLayers);
+if (displayLabelsCheckbox) displayLabelsCheckbox.checked = settings.displayLabels ?? false;
+if (displayPerimetersCheckbox)
+  displayPerimetersCheckbox.checked = settings.displayPerimeters ?? false;
+displayLabelsCheckbox?.addEventListener("change", () => {
+  saveSetting("displayLabels", displayLabelsCheckbox.checked);
+  refreshOverlayLayers();
+});
+displayPerimetersCheckbox?.addEventListener("change", () => {
+  saveSetting("displayPerimeters", displayPerimetersCheckbox.checked);
+  refreshOverlayLayers();
+});
 
 // topmost cache under the pixel, ignoring tracks, labels and perimeters
 const cacheAt = (pixel: Pixel): CacheFeature | null => {
