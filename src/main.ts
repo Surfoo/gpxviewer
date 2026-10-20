@@ -1,12 +1,12 @@
 import "ol/ol.css";
 import "./style.css";
 
-import { FullScreen, Zoom } from "ol/control";
 import type { Coordinate } from "ol/coordinate";
 import { createEmpty, extend, isEmpty } from "ol/extent";
 import type Feature from "ol/Feature";
 import type Point from "ol/geom/Point";
 import Overlay from "ol/Overlay";
+import type { Pixel } from "ol/pixel";
 import { gpxToFeatures, gpxToTracks } from "@/gpx/parser";
 import { baseLayers, createMap, trackLayer, trackSource, vectorLayer, vectorSource } from "@/map";
 import { createBaseLayerControl } from "@/map/baseLayerControl";
@@ -88,42 +88,19 @@ const refreshOverlayLayers = (): void => {
   }
 };
 
+const setButtonLabel = (button: Element | null | undefined, label: string): void => {
+  button?.setAttribute("title", label);
+  button?.setAttribute("aria-label", label);
+};
+
 const updateControlLabels = (): void => {
   locateControl.updateLabel(t("btn.locate"));
-  map
-    .getControls()
-    .getArray()
-    .forEach((control) => {
-      if (control instanceof FullScreen) {
-        const label = t("btn.fullscreen");
-        control.setProperties({ tipLabel: label }, false);
-        const button = control.element?.querySelector("button");
-        if (button) {
-          button.setAttribute("title", label);
-          button.setAttribute("aria-label", label);
-        }
-      }
-      if (control instanceof Zoom) {
-        const zoomInLabel = t("btn.zoomIn");
-        const zoomOutLabel = t("btn.zoomOut");
-        control.setProperties(
-          {
-            zoomInTipLabel: zoomInLabel,
-            zoomOutTipLabel: zoomOutLabel,
-          },
-          false,
-        );
-        const zoomButtons = control.element?.querySelectorAll("button");
-        if (zoomButtons?.[0]) {
-          zoomButtons[0].setAttribute("title", zoomInLabel);
-          zoomButtons[0].setAttribute("aria-label", zoomInLabel);
-        }
-        if (zoomButtons?.[1]) {
-          zoomButtons[1].setAttribute("title", zoomOutLabel);
-          zoomButtons[1].setAttribute("aria-label", zoomOutLabel);
-        }
-      }
-    });
+  const root = map.getTargetElement();
+  if (!root) return;
+  setButtonLabel(root.querySelector(".ol-full-screen button"), t("btn.fullscreen"));
+  const [zoomIn, zoomOut] = Array.from(root.querySelectorAll(".ol-zoom button"));
+  setButtonLabel(zoomIn, t("btn.zoomIn"));
+  setButtonLabel(zoomOut, t("btn.zoomOut"));
 };
 
 updateControlLabels();
@@ -150,8 +127,10 @@ initPanelToggle({
 
 const fitToData = (): boolean => {
   const extent = createEmpty();
-  if (vectorSource.getFeatures().length > 0) extend(extent, vectorSource.getExtent());
-  if (trackSource.getFeatures().length > 0) extend(extent, trackSource.getExtent());
+  for (const source of [vectorSource, trackSource]) {
+    const sourceExtent = source.getExtent();
+    if (sourceExtent && source.getFeatures().length > 0) extend(extent, sourceExtent);
+  }
   if (isEmpty(extent)) return false;
   map.getView().fit(extent, { padding: [32, 32, 32, 32], duration: 300, maxZoom: 15 });
   return true;
@@ -261,20 +240,23 @@ searchInput?.addEventListener("keydown", (event) => {
 displayLabelsCheckbox?.addEventListener("change", refreshOverlayLayers);
 displayPerimetersCheckbox?.addEventListener("change", refreshOverlayLayers);
 
-map.on("singleclick", (event) => {
-  let foundFeature: CacheFeature | null = null;
+// topmost cache under the pixel, ignoring tracks, labels and perimeters
+const cacheAt = (pixel: Pixel): CacheFeature | null => {
+  let found: CacheFeature | null = null;
   map.forEachFeatureAtPixel(
-    event.pixel,
+    pixel,
     (feature) => {
-      // Ignore clicks on label/perimeter layers
-      if (feature.getGeometry()?.getType() === "Circle" || feature.get("label")) {
-        return false;
-      }
-      foundFeature = feature as CacheFeature;
+      if (feature.getGeometry()?.getType() === "Circle" || feature.get("label")) return false;
+      found = feature as CacheFeature;
       return true;
     },
     { hitTolerance: 5, layerFilter: (layer) => layer !== trackLayer },
   );
+  return found;
+};
+
+map.on("singleclick", (event) => {
+  const foundFeature = cacheAt(event.pixel);
   if (foundFeature) {
     infoOverlay.render(foundFeature, event.coordinate as Coordinate);
   } else {
@@ -284,18 +266,7 @@ map.on("singleclick", (event) => {
 
 map.on("pointermove", (event) => {
   const mapTarget = map.getTargetElement();
-  let hovered: CacheFeature | null = null;
-  map.forEachFeatureAtPixel(
-    event.pixel,
-    (feature) => {
-      if (feature.getGeometry()?.getType() === "Circle" || feature.get("label")) {
-        return false;
-      }
-      hovered = feature as CacheFeature;
-      return true;
-    },
-    { hitTolerance: 5, layerFilter: (layer) => layer !== trackLayer },
-  );
+  const hovered = cacheAt(event.pixel);
   if (hovered) {
     const name = hovered.get<string>("name") ?? "";
     tooltipElement.textContent = name;

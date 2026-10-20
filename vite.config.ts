@@ -1,5 +1,5 @@
 import path from "node:path";
-import { defineConfig } from "vite";
+import { defineConfig } from "vitest/config";
 
 export default defineConfig({
   root: "app",
@@ -14,6 +14,11 @@ export default defineConfig({
     fs: {
       allow: [path.resolve(__dirname)],
     },
+  },
+  test: {
+    root: __dirname,
+    environment: "jsdom",
+    include: ["src/**/*.test.ts"],
   },
   build: {
     outDir: "../public",

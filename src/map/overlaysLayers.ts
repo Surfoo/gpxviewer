@@ -50,7 +50,7 @@ export const updateLabels = (layer: VectorLayer<VectorSource>, features: CacheFe
     .filter((f): f is Feature<Point> => Boolean(f));
 
   labelFeatures.forEach((feat) => {
-    const text = feat.get<string>("label") ?? "";
+    const text = (feat.get("label") as string | undefined) ?? "";
     feat.setStyle(labelStyle(text));
   });
 

@@ -7,7 +7,7 @@ import { fromLonLat } from "ol/proj";
 import VectorSource from "ol/source/Vector";
 import { Stroke, Style } from "ol/style";
 import View from "ol/View";
-import type { BaseLayer } from "@/types";
+import type { BaseLayer, CacheFeature } from "@/types";
 import { iconLabel } from "@/ui/icons";
 import { createBaseLayers } from "./baseLayers";
 import { getFeatureStyle } from "./styles";
@@ -16,7 +16,7 @@ export const baseLayers: BaseLayer[] = createBaseLayers();
 export const vectorSource = new VectorSource();
 export const vectorLayer = new VectorLayer({
   source: vectorSource,
-  style: getFeatureStyle,
+  style: (feature) => getFeatureStyle(feature as CacheFeature),
   zIndex: 10,
 });
 

@@ -45,7 +45,7 @@ export const createBaseLayerControl = (layers: BaseLayer[], label: string): Cont
     button.setAttribute("aria-expanded", String(open));
   };
 
-  button.addEventListener("click", () => setOpen(picker.hidden));
+  button.addEventListener("click", () => setOpen(Boolean(picker.hidden)));
   document.addEventListener("click", (event) => {
     if (!element.contains(event.target as Node)) setOpen(false);
   });

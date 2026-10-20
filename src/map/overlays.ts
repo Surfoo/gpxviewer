@@ -15,7 +15,7 @@ const escapeHtml = (value: string): string =>
 const escapeAttribute = (value: string): string => escapeHtml(value).replaceAll('"', "&quot;");
 
 // degrees + decimal minutes, the format GPS units expect: N 48° 21.791 E 002° 59.094
-const formatCoords = (lat: number, lon: number): string => {
+export const formatCoords = (lat: number, lon: number): string => {
   const part = (value: number, pos: string, neg: string, width: number): string => {
     const abs = Math.abs(value);
     const deg = Math.floor(abs);
