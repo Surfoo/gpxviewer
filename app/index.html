@@ -23,7 +23,7 @@
   <body class="is-loading">
     <div class="page">
       <main class="layout">
-        <section class="panel" id="import-panel" data-state="expanded">
+        <aside class="panel" id="import-panel" data-state="expanded">
           <div class="brand">
             <h1>GPX Viewer</h1>
             <p class="tagline" data-i18n="header.tagline"></p>
@@ -89,23 +89,23 @@
               </label>
             </div>
             <div class="input-group">
-              <label data-i18n="label.filter"></label>
-              <div id="type-filter" class="checkbox-grid"></div>
+              <span id="type-filter-label" class="field-label" data-i18n="label.filter"></span>
+              <div id="type-filter" class="checkbox-grid" role="group" aria-labelledby="type-filter-label"></div>
             </div>
             <div class="input-group">
-              <label data-i18n="label.difficulty"></label>
-              <div class="range-filter" data-key="difficulty">
-                <select aria-label="min"></select>
-                <span>–</span>
-                <select aria-label="max"></select>
+              <span id="difficulty-label" class="field-label" data-i18n="label.difficulty"></span>
+              <div class="range-filter" data-key="difficulty" role="group" aria-labelledby="difficulty-label">
+                <select data-i18n-aria-label="label.min"></select>
+                <span aria-hidden="true">–</span>
+                <select data-i18n-aria-label="label.max"></select>
               </div>
             </div>
             <div class="input-group">
-              <label data-i18n="label.terrain"></label>
-              <div class="range-filter" data-key="terrain">
-                <select aria-label="min"></select>
-                <span>–</span>
-                <select aria-label="max"></select>
+              <span id="terrain-label" class="field-label" data-i18n="label.terrain"></span>
+              <div class="range-filter" data-key="terrain" role="group" aria-labelledby="terrain-label">
+                <select data-i18n-aria-label="label.min"></select>
+                <span aria-hidden="true">–</span>
+                <select data-i18n-aria-label="label.max"></select>
               </div>
             </div>
           </div>
@@ -132,14 +132,14 @@
               ></button>
             </div>
           </div>
-        </section>
+        </aside>
 
         <section class="map-shell">
           <div id="map"></div>
-          <div id="status" class="status" data-i18n="status.ready"></div>
+          <div id="status" class="status" role="status" data-i18n="status.ready"></div>
 
           <div id="popup" class="ol-popup">
-            <a href="#" id="popup-closer" class="ol-popup-closer" data-i18n-aria-label="btn.close"></a>
+            <button type="button" id="popup-closer" class="ol-popup-closer" data-i18n-aria-label="btn.close"></button>
             <div id="info-content"></div>
           </div>
         </section>

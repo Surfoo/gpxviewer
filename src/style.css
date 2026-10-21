@@ -247,7 +247,8 @@ h1 {
   color: var(--text);
 }
 
-label {
+label,
+.field-label {
   font-size: 0.92rem;
   color: var(--muted);
 }
@@ -275,7 +276,7 @@ input::placeholder {
   font-weight: 600;
   cursor: pointer;
   color: #ffffff;
-  background: linear-gradient(135deg, var(--accent) 0%, var(--accent-strong) 100%);
+  background: linear-gradient(135deg, #1a8548 0%, var(--accent-strong) 100%); /* white text >= 4.5:1 */
   transition:
     transform 150ms ease,
     box-shadow 150ms ease;
@@ -452,6 +453,11 @@ body[data-panel="collapsed"] .panel-toggle-floating {
 }
 
 .ol-popup-closer {
+  font: inherit;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
   text-decoration: none;
   position: absolute;
   top: 8px;
@@ -535,44 +541,58 @@ body[data-panel="collapsed"] .panel-toggle-floating {
 
 
 @media (max-width: 640px) {
+  /* the sidebar stays a drawer over the full-screen map */
   .layout,
   .layout[data-panel="collapsed"] {
-    grid-template-columns: 1fr;
-    grid-template-rows: auto 60vh;
-    height: auto;
+    height: 100dvh;
   }
 
   .panel {
-    position: relative;
-    width: auto;
-    height: auto;
-    border-right: none;
-  }
-
-  .layout[data-panel="collapsed"] #import-panel {
-    display: none;
+    width: min(340px, 88vw);
+    height: 100dvh;
   }
 
   .map-shell {
-    grid-row: 2;
-    grid-column: 1;
-    height: 60vh;
+    height: 100dvh;
   }
 
-  header {
-    padding: 10px 12px;
+  input,
+  select {
+    font-size: 16px; /* no zoom on focus */
   }
 
-  .map-shell,
-  #map {
-    min-height: 380px;
+  .panel-toggle-floating {
+    top: 12px;
+    left: 12px;
+    transform: none;
+  }
+
+  .panel-toggle-floating:hover,
+  .panel-toggle-floating:focus-visible,
+  .panel-toggle-floating:active {
+    transform: none;
   }
 
   .status {
-    left: 50%;
-    transform: translateX(-50%);
-    max-width: calc(100% - 32px);
+    left: 8px;
+    right: 8px;
+    bottom: 28px;
+    max-width: none;
     text-align: center;
+  }
+
+  .ol-popup {
+    min-width: 0;
+    width: calc(100vw - 32px);
+    max-width: 380px;
+  }
+
+  .meta-wide {
+    white-space: normal;
+  }
+
+  .ol-scale-line {
+    bottom: 84px;
   }
 }
 
@@ -591,7 +611,7 @@ body[data-panel="collapsed"] .panel-toggle-floating {
   height: 20px;
   margin: 0;
   border-radius: 999px;
-  background: #c9d3c4;
+  background: #7f8f7c; /* >= 3:1 against white */
   cursor: pointer;
   transition: background-color 160ms ease;
 }
@@ -716,6 +736,28 @@ body[data-panel="collapsed"] .panel-toggle-floating {
   transition: none !important;
 }
 
+@media (prefers-reduced-motion: reduce) {
+  * {
+    transition: none !important;
+  }
+}
+
+/* beats the generic "#import-panel button" gradient */
+#import-panel .type-icon {
+  padding: 0;
+  background: #fff;
+  border: none;
+  border-radius: 0;
+}
+
+#import-panel .group-toggle {
+  flex: none;
+  padding: 0;
+  background: var(--group-color, var(--muted));
+  border: 2px solid var(--border);
+  border-radius: 50%;
+}
+
 /* bottom right, above the attribution (bottom left is under the sidebar) */
 .ol-scale-line {
   left: auto;
@@ -803,4 +845,10 @@ body[data-panel="collapsed"] .panel-toggle-floating {
   padding: 8px 14px;
   border-radius: 4px;
   cursor: pointer;
+}
+
+/* WCAG 2.2 target size: OpenLayers' default 22px buttons are too small */
+.ol-control button {
+  width: 32px;
+  height: 32px;
 }

@@ -10,6 +10,7 @@ Complete rewrite: Leaflet and plain JavaScript are replaced by OpenLayers, TypeS
 ### Added
 
 - Fixed sidebar next to the map, collapsible with a sliding animation (the map does not move).
+- Mobile layout: full-screen map with the sidebar as a drawer (collapsed by default, closes after loading a GPX), popup and status bar sized to the screen.
 - Load several GPX files at once, from the device or from a URL.
 - Cache icons per type, shown in a filter grouped by colour (traditional, multi, events, virtual/earth/webcam, mystery and others).
 - Filters by difficulty and terrain (min/max ranges), and a switch to hide found caches.
@@ -19,6 +20,7 @@ Complete rewrite: Leaflet and plain JavaScript are replaced by OpenLayers, TypeS
 - Optional geocode labels and perimeters around caches, and user geolocation.
 - About dialog (info icon in the sidebar) crediting the open source projects, data and assets used, with links to their official sites.
 - Distance scale on the map (metric).
+- Accessibility: type filters are real buttons with names and pressed state, the collapsed sidebar is `inert`, filter groups are labelled, status messages are announced, contrast and target sizes meet WCAG 2.2 AA, animations respect `prefers-reduced-motion`.
 - Tooltip with the cache name on hover.
 - Basemap picker on the map with thumbnails: OSM Standard, OSM Humanitarian, CyclOSM, OpenTopoMap and Satellite (Esri).
 - Display settings saved in the browser (`localStorage`): language, basemap, geocode labels, perimeters and sidebar state. Filters are not saved.

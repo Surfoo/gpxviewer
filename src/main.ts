@@ -127,11 +127,13 @@ initI18nDom({
   },
 });
 
-initPanelToggle({
+const isMobile = window.matchMedia("(max-width: 640px)");
+
+const { setPanelState } = initPanelToggle({
   layout,
   toggle: togglePanelButton,
   floatingToggle: togglePanelFloatingButton,
-  initialCollapsed: settings.panelCollapsed,
+  initialCollapsed: settings.panelCollapsed ?? isMobile.matches,
   onChange: (collapsed) => {
     saveSetting("panelCollapsed", collapsed);
     syncMapSize();
@@ -155,6 +157,7 @@ const addFeaturesToMap = (features: Feature<Point>[], sourceLabel: string): void
   });
   updateStats();
   fitToData();
+  if (isMobile.matches) setPanelState(true); // show the map right away
   setStatus(t("status.loaded", { source: sourceLabel, count: features.length }));
   refreshOverlayLayers();
 };
@@ -344,11 +347,14 @@ const renderTypeFilter = (): void => {
     groupEl.dataset.group = group.id;
     groupEl.dataset.enabled = "true";
 
-    const toggle = document.createElement("div");
+    const toggle = document.createElement("button");
+    toggle.type = "button";
     toggle.className = "group-toggle";
     toggle.dataset.group = group.id;
+    toggle.dataset.i18nAriaLabel = "label.toggleGroup";
     toggle.style.setProperty("--group-color", group.color);
-    toggle.title = "Toggle group";
+    toggle.setAttribute("aria-label", t("label.toggleGroup"));
+    toggle.title = t("label.toggleGroup");
     groupEl.appendChild(toggle);
 
     const iconsWrap = document.createElement("div");
@@ -356,13 +362,17 @@ const renderTypeFilter = (): void => {
     group.types.forEach((type) => {
       const config = typeToIconFile[type];
       if (!config) return;
+      const button = document.createElement("button");
+      button.type = "button";
+      button.className = "type-icon";
+      button.dataset.type = type;
+      button.title = config.label;
+      button.setAttribute("aria-label", config.label);
       const img = document.createElement("img");
-      img.className = "type-icon";
-      img.dataset.type = type;
-      img.title = config.label;
-      img.alt = config.label;
+      img.alt = "";
       img.src = `${base}icons/mapicons/geocaches/${config.file}`;
-      iconsWrap.appendChild(img);
+      button.appendChild(img);
+      iconsWrap.appendChild(button);
     });
     groupEl.appendChild(iconsWrap);
 
@@ -381,6 +391,13 @@ const updateAllowedTypesFromUI = (): void => {
       const iconEnabled = icon.dataset.enabled !== "false";
       if (type && iconEnabled) selected.push(type.trim().toLowerCase());
     });
+  });
+  typeFilterContainer.querySelectorAll<HTMLElement>(".type-icon, .group-toggle").forEach((el) => {
+    const owner = el.closest<HTMLElement>(".type-group");
+    const on = el.classList.contains("group-toggle")
+      ? owner?.dataset.enabled !== "false"
+      : el.dataset.enabled !== "false";
+    el.setAttribute("aria-pressed", String(on));
   });
   setAllowedTypes(new Set(selected));
   refreshOverlayLayers();
@@ -402,7 +419,7 @@ typeFilterContainer?.addEventListener("click", (event) => {
     }
   }
 
-  const icon = target.closest<HTMLImageElement>(".type-icon");
+  const icon = target.closest<HTMLElement>(".type-icon");
   if (icon) {
     const isEnabled = icon.dataset.enabled !== "false";
     icon.dataset.enabled = isEnabled ? "false" : "true";

@@ -41,6 +41,7 @@ Run commands from the repo root. Dev and build use the base path `/gpxviewer/` (
 - UI changes are verified manually in the browser: `npm run dev`, load a GPX via the UI (file or URL), zoom/pan, open popups, toggle filters, test the sidebar, basemap picker and location controls.
 - For data parsing changes, exercise multiple GPX samples (found vs unfound caches, tracks/routes, non-cache waypoints, different sizes).
 - To load a test GPX by URL, copy it temporarily into `static/` and delete the copy afterwards; never leave test files in the repo.
+- Accessibility: clickable things are `<button>`s (never `div`/`img`), groups are labelled, text comes from i18n keys (also `aria-label`). After UI changes inject axe-core (cdnjs script) in the page and expect zero violations; `html-has-lang` on `#claude-ai` is an artefact of the Chrome extension.
 - Geolocation can be tested by overriding `navigator.geolocation.watchPosition` with a fake position.
 - `pkill -f` in a shell chain kills the shell (exit code 144 here): start the dev server in the background and stop it on its own, never combined with other commands.
 

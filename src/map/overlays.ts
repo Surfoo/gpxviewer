@@ -31,7 +31,7 @@ export const createInfoOverlay = (): {
   render: (feature: CacheFeature, coordinate: Coordinate) => void;
 } => {
   const popup = document.querySelector<HTMLDivElement>("#popup");
-  const popupCloser = document.querySelector<HTMLAnchorElement>("#popup-closer");
+  const popupCloser = document.querySelector<HTMLButtonElement>("#popup-closer");
   const infoContent = document.querySelector<HTMLDivElement>("#info-content");
   const overlayElement = popup ?? document.createElement("div");
 
