@@ -5,7 +5,6 @@ import { icon } from "./icons";
 type PanelOptions = {
   layout: HTMLElement | null;
   toggle: HTMLButtonElement | null;
-  floatingToggle: HTMLButtonElement | null;
   initialCollapsed?: boolean;
   onChange?: (collapsed: boolean) => void;
 };
@@ -13,7 +12,6 @@ type PanelOptions = {
 export const initPanelToggle = ({
   layout,
   toggle,
-  floatingToggle,
   initialCollapsed = false,
   onChange,
 }: PanelOptions) => {
@@ -28,14 +26,11 @@ export const initPanelToggle = ({
     // a collapsed panel is only moved off-screen: inert keeps it out of the tab order
     layout.querySelector<HTMLElement>("#import-panel")?.toggleAttribute("inert", collapsed);
 
-    for (const button of [toggle, floatingToggle]) {
-      if (!button) continue;
-      button.replaceChildren(icon(node));
-      button.setAttribute("aria-expanded", String(!collapsed));
-      button.dataset.i18nAriaLabel = key; // so a language change keeps the right label
-      button.setAttribute("aria-label", t(key));
-      button.title = t(key);
-    }
+    toggle.replaceChildren(icon(node));
+    toggle.setAttribute("aria-expanded", String(!collapsed));
+    toggle.dataset.i18nAriaLabel = key; // so a language change keeps the right label
+    toggle.setAttribute("aria-label", t(key));
+    toggle.title = t(key);
 
     onChange?.(collapsed);
   };
@@ -43,11 +38,9 @@ export const initPanelToggle = ({
   const handleToggle = (): void => {
     const collapsed = layout?.dataset.panel === "collapsed";
     setPanelState(!collapsed);
-    (collapsed ? toggle : floatingToggle)?.focus(); // the clicked button is gone
   };
 
   toggle?.addEventListener("click", handleToggle);
-  floatingToggle?.addEventListener("click", handleToggle);
 
   // restore the saved state without playing the slide animation
   layout?.classList.add("no-anim");

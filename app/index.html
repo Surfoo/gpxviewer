@@ -32,16 +32,6 @@
             <div>
               <h2 data-i18n="panel.title"></h2>
             </div>
-            <div class="panel-actions">
-              <button
-                id="toggle-panel"
-                type="button"
-                class="secondary icon-button"
-                aria-expanded="true"
-                data-i18n-aria-label="panel.hide"
-              >
-              </button>
-            </div>
           </div>
           <div class="panel-body" id="import-body">
             <div class="input-group">
@@ -50,29 +40,21 @@
             </div>
             <div class="input-group">
               <label for="gpx-url" data-i18n="label.fromUrl"></label>
-              <input
-                id="gpx-url"
-                type="url"
-                placeholder=""
-                spellcheck="false"
-                inputmode="url"
-                data-i18n-placeholder="placeholder.gpxUrl"
-              />
-              <button id="load-url" type="button" data-i18n="btn.loadUrl"></button>
+              <div class="url-row">
+                <input
+                  id="gpx-url"
+                  type="url"
+                  placeholder=""
+                  spellcheck="false"
+                  inputmode="url"
+                  data-i18n-placeholder="placeholder.gpxUrl"
+                />
+                <button id="load-url" type="button" data-i18n="btn.loadUrl"></button>
+              </div>
             </div>
             <div class="button-row">
               <button id="fit-data" type="button" class="secondary" data-i18n="btn.refit"></button>
               <button id="clear-map" type="button" class="secondary" data-i18n="btn.clear"></button>
-            </div>
-            <div class="input-group">
-              <input
-                id="search"
-                type="search"
-                spellcheck="false"
-                autocomplete="off"
-                data-i18n-placeholder="placeholder.search"
-                data-i18n-aria-label="placeholder.search"
-              />
             </div>
             <div class="input-group">
               <label class="checkbox">
@@ -136,6 +118,14 @@
 
         <section class="map-shell">
           <div id="map"></div>
+          <input
+            id="search"
+            type="search"
+            spellcheck="false"
+            autocomplete="off"
+            data-i18n-placeholder="placeholder.search"
+            data-i18n-aria-label="placeholder.search"
+          />
           <div id="status" class="status" role="status" data-i18n="status.ready"></div>
 
           <div id="popup" class="ol-popup">
@@ -145,9 +135,9 @@
         </section>
       </main>
       <button
-        id="toggle-panel-floating"
+        id="toggle-panel"
         type="button"
-        class="secondary icon-button panel-toggle-floating"
+        class="secondary icon-button panel-toggle"
         aria-expanded="true"
         data-i18n-aria-label="panel.show"
       >

@@ -47,8 +47,6 @@ const displayLabelsCheckbox = document.querySelector<HTMLInputElement>("#display
 const displayPerimetersCheckbox = document.querySelector<HTMLInputElement>("#display-perimeters");
 const typeFilterContainer = document.querySelector<HTMLDivElement>("#type-filter");
 const togglePanelButton = document.querySelector<HTMLButtonElement>("#toggle-panel");
-const togglePanelFloatingButton =
-  document.querySelector<HTMLButtonElement>("#toggle-panel-floating");
 const languageSelect = document.querySelector<HTMLSelectElement>("#language");
 
 const { setStatus, updateStats } = initState(statusBar, statsCount, vectorSource);
@@ -133,7 +131,6 @@ const isMobile = window.matchMedia("(max-width: 640px)");
 const { setPanelState } = initPanelToggle({
   layout,
   toggle: togglePanelButton,
-  floatingToggle: togglePanelFloatingButton,
   initialCollapsed: settings.panelCollapsed ?? isMobile.matches,
   onChange: (collapsed) => {
     saveSetting("panelCollapsed", collapsed);

@@ -14,7 +14,7 @@ Complete rewrite: Leaflet and plain JavaScript are replaced by OpenLayers, TypeS
 - Load several GPX files at once, from the device or from a URL.
 - Cache icons per type, shown in a filter with the same seven colour groups as the c:geo compact map: traditional, multi, mystery/Wherigo/letterbox, virtual/earth/webcam, events, special (APE, HQ, GPS Adventures) and Adventure Lab.
 - Filters by difficulty and terrain (min/max ranges), and a switch to hide found caches.
-- Search by geocode or name: centres the map on the cache and opens its popup.
+- Search by geocode or name, in a field at the top centre of the map: centres the map on the cache and opens its popup.
 - Popup with type, size, owner profile link, formatted date, difficulty/terrain and coordinates in degrees and decimal minutes, copied to the clipboard on click.
 - Track and route display (`<trk>` and `<rte>`), included when fitting the map to the data.
 - Optional geocode labels and perimeters around caches, and user geolocation.

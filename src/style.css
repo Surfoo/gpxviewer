@@ -21,10 +21,20 @@
 body {
   margin: 0;
   min-height: 100vh;
-  font-family: "Space Grotesk", "Segoe UI", system-ui, -apple-system, sans-serif;
+  font-family:
+    "Space Grotesk",
+    "Segoe UI",
+    system-ui,
+    -apple-system,
+    sans-serif;
   background:
-    radial-gradient(circle at 30% 20%, rgba(33, 150, 83, 0.12), transparent 32%),
-    radial-gradient(circle at 80% 0%, rgba(255, 193, 7, 0.12), transparent 28%), var(--bg);
+    radial-gradient(
+      circle at 30% 20%,
+      rgba(33, 150, 83, 0.12),
+      transparent 32%
+    ),
+    radial-gradient(circle at 80% 0%, rgba(255, 193, 7, 0.12), transparent 28%),
+    var(--bg);
   color: var(--text);
 }
 
@@ -44,7 +54,7 @@ h1 {
 .tagline {
   margin: 2px 0 0;
   color: var(--muted);
-  font-size: 0.92rem;
+  font-size: 0.82rem;
 }
 
 .badge {
@@ -90,20 +100,26 @@ h1 {
   overflow: auto;
 }
 
+/* the panel scrolls: its sections must keep their height instead of shrinking */
+.panel > * {
+  flex-shrink: 0;
+}
+
 .panel h2 {
-  margin: 0 0 6px;
-  font-size: 1.05rem;
+  margin: 0;
+  font-size: 0.98rem;
 }
 
 .brand {
-  margin-bottom: 8px;
-  padding-bottom: 0.8em;
+  margin-bottom: 0; /* the panel gap already separates it */
+  padding-left: 52px; /* room for the toggle button */
+  padding-bottom: 0.4em;
   border-bottom: 1px solid var(--border);
 }
 
 .brand h1 {
   margin: 0;
-  font-size: 1.15rem;
+  font-size: 1.05rem;
 }
 
 .panel-sub {
@@ -117,12 +133,6 @@ h1 {
   align-items: flex-start;
   justify-content: space-between;
   gap: 10px;
-}
-
-.panel-actions {
-  display: flex;
-  align-items: center;
-  gap: 4px;
 }
 
 .panel-body {
@@ -183,7 +193,10 @@ h1 {
   background: var(--group-color, var(--muted));
   cursor: pointer;
   padding: 0;
-  transition: opacity 120ms ease, transform 120ms ease, box-shadow 120ms ease;
+  transition:
+    opacity 120ms ease,
+    transform 120ms ease,
+    box-shadow 120ms ease;
 }
 
 .type-group[data-enabled="false"] .group-toggle {
@@ -208,7 +221,9 @@ h1 {
   place-items: center;
   cursor: pointer;
   background: #fff;
-  transition: opacity 120ms ease, transform 120ms ease;
+  transition:
+    opacity 120ms ease,
+    transform 120ms ease;
 }
 
 .type-icon img {
@@ -243,13 +258,13 @@ h1 {
   justify-content: space-between;
   align-items: center;
   gap: 8px;
-  font-size: 0.92rem;
+  font-size: 0.85rem;
   color: var(--text);
 }
 
 label,
 .field-label {
-  font-size: 0.92rem;
+  font-size: 0.85rem;
   color: var(--muted);
 }
 
@@ -268,6 +283,12 @@ input::placeholder {
   color: var(--muted);
 }
 
+#import-panel input,
+#import-panel select,
+#import-panel button {
+  font-size: 0.85rem;
+}
+
 #import-panel button {
   appearance: none;
   border: none;
@@ -276,7 +297,11 @@ input::placeholder {
   font-weight: 600;
   cursor: pointer;
   color: #ffffff;
-  background: linear-gradient(135deg, #1a8548 0%, var(--accent-strong) 100%); /* white text >= 4.5:1 */
+  background: linear-gradient(
+    135deg,
+    #1a8548 0%,
+    var(--accent-strong) 100%
+  ); /* white text >= 4.5:1 */
   transition:
     transform 150ms ease,
     box-shadow 150ms ease;
@@ -301,44 +326,42 @@ button.secondary {
   gap: 6px;
 }
 
-.panel-toggle-floating {
+/* one fixed button, same spot whether the panel is open or closed */
+.panel-toggle {
   position: fixed;
   left: 12px;
-  top: 50%;
-  transform: translateY(-50%);
+  top: 12px;
   z-index: 2000;
-  display: none;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
   min-width: 44px;
   min-height: 44px;
   cursor: pointer;
-  transition:
-    background-color 160ms ease,
-    color 160ms ease,
-    box-shadow 160ms ease,
-    transform 140ms ease;
 }
 
-body[data-panel="collapsed"] .panel-toggle-floating {
-  display: inline-flex;
-}
-
-.panel-toggle-floating:hover,
-.panel-toggle-floating:focus-visible {
+.panel-toggle:hover,
+.panel-toggle:focus-visible {
   background: #ffffff;
   border-color: var(--accent);
   color: var(--accent-strong);
-  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.14);
-  transform: translateY(-50%) scale(1.04);
 }
 
-.panel-toggle-floating:focus-visible {
+.panel-toggle:focus-visible {
   outline: 2px solid var(--accent);
   outline-offset: 2px;
 }
 
-.panel-toggle-floating:active {
-  transform: translateY(-50%) scale(0.98);
+.url-row {
+  display: flex;
+  gap: 6px;
+}
+
+.url-row input {
+  flex: 1;
+  min-width: 0;
+}
+
+.url-row button {
+  flex: none;
 }
 
 .button-row {
@@ -539,7 +562,6 @@ body[data-panel="collapsed"] .panel-toggle-floating {
   border: none;
 }
 
-
 @media (max-width: 640px) {
   /* the sidebar stays a drawer over the full-screen map */
   .layout,
@@ -556,21 +578,10 @@ body[data-panel="collapsed"] .panel-toggle-floating {
     height: 100dvh;
   }
 
-  input,
-  select {
+  #import-panel input,
+  #import-panel select,
+  #search {
     font-size: 16px; /* no zoom on focus */
-  }
-
-  .panel-toggle-floating {
-    top: 12px;
-    left: 12px;
-    transform: none;
-  }
-
-  .panel-toggle-floating:hover,
-  .panel-toggle-floating:focus-visible,
-  .panel-toggle-floating:active {
-    transform: none;
   }
 
   .status {
@@ -700,8 +711,17 @@ body[data-panel="collapsed"] .panel-toggle-floating {
 }
 
 .panel-footer .input-group {
+  flex-direction: row;
+  align-items: center;
+  gap: 12px;
   margin-bottom: 8px;
   text-align: left;
+}
+
+.panel-footer select {
+  flex: 1;
+  min-width: 0;
+  width: auto;
 }
 
 .ol-control button svg,
@@ -711,12 +731,20 @@ body[data-panel="collapsed"] .panel-toggle-floating {
 }
 
 #search {
-  width: 100%;
-  padding: 8px;
+  position: absolute;
+  top: 8px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+  width: min(360px, calc(100% - 140px));
+  padding: 8px 12px;
   border-radius: 4px;
   border: 1px solid var(--border);
-  background: #f8fbf7;
+  background: rgba(255, 255, 255, 0.95);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.15);
   color: var(--text);
+  font: inherit;
+  font-size: 0.85rem;
 }
 
 .copy-coords {
