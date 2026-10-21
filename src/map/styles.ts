@@ -32,6 +32,14 @@ export const typeToIconFile: Record<string, CacheIconConfig> = {
   },
   "groundspeak block party": { file: "type_specialevent.png", label: "Groundspeak Block Party" },
   "giga-event cache": { file: "type_giga.png", label: "Giga-Event Cache" },
+  "special event cache": { file: "type_specialevent.png", label: "Special Event Cache" },
+  "lab cache": { file: "type_advlab.png", label: "Adventure Lab Cache" },
+};
+
+// every type name drawn with the same icon: one filter button covers them all
+export const typesSharingIcon = (type: string): string[] => {
+  const file = typeToIconFile[type]?.file;
+  return Object.keys(typeToIconFile).filter((key) => typeToIconFile[key].file === file);
 };
 
 const defaultIconFile = "type_unknown.png";

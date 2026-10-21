@@ -8,6 +8,7 @@ import {
   setAllowedTypes,
   setHideFound,
   setRange,
+  typesSharingIcon,
 } from "./styles";
 
 const cache = (props: Record<string, unknown>): CacheFeature =>
@@ -60,5 +61,25 @@ describe("isFeatureVisible", () => {
   it("keeps caches with unknown difficulty or terrain visible", () => {
     setRange("difficulty", 4, 5);
     expect(isFeatureVisible(cache({ difficulty: "?", terrain: "?" }))).toBe(true);
+  });
+});
+
+describe("typesSharingIcon", () => {
+  it("returns every type name drawn with the same icon", () => {
+    const types = typesSharingIcon("special event cache");
+    expect(types).toContain("groundspeak block party");
+    expect(types).toContain("community celebration event");
+  });
+
+  it("returns an empty list for an unknown type", () => {
+    expect(typesSharingIcon("nope")).toEqual([]);
+  });
+});
+
+describe("filter with icon aliases", () => {
+  it("keeps a Groundspeak block party visible when its icon is selected", () => {
+    setAllowedTypes(new Set(typesSharingIcon("special event cache")));
+    expect(isFeatureVisible(cache({ type: "Groundspeak Block Party" }))).toBe(true);
+    expect(isFeatureVisible(cache({ type: "Traditional Cache" }))).toBe(false);
   });
 });

@@ -12,7 +12,7 @@ Complete rewrite: Leaflet and plain JavaScript are replaced by OpenLayers, TypeS
 - Fixed sidebar next to the map, collapsible with a sliding animation (the map does not move).
 - Mobile layout: full-screen map with the sidebar as a drawer (collapsed by default, closes after loading a GPX), popup and status bar sized to the screen.
 - Load several GPX files at once, from the device or from a URL.
-- Cache icons per type, shown in a filter grouped by colour (traditional, multi, events, virtual/earth/webcam, mystery and others).
+- Cache icons per type, shown in a filter with the same seven colour groups as the c:geo compact map: traditional, multi, mystery/Wherigo/letterbox, virtual/earth/webcam, events, special (APE, HQ, GPS Adventures) and Adventure Lab.
 - Filters by difficulty and terrain (min/max ranges), and a switch to hide found caches.
 - Search by geocode or name: centres the map on the cache and opens its popup.
 - Popup with type, size, owner profile link, formatted date, difficulty/terrain and coordinates in degrees and decimal minutes, copied to the clipboard on click.

@@ -31,6 +31,11 @@ describe("gpxToFeatures", () => {
     expect(feature.get("found")).toBe(false);
   });
 
+  it('reads an Adventure Lab cache (type "Lab Cache")', () => {
+    const [feature] = gpxToFeatures(gpx(wpt(48.19, 3.28, "LC421X-1", "Lab Cache")), "t.gpx");
+    expect(feature.get("type")).toBe("Lab Cache");
+  });
+
   it("flags caches whose symbol says found", () => {
     const [feature] = gpxToFeatures(gpx(wpt(48, 2, "GC2", "Multi-cache", " Found")), "t.gpx");
     expect(feature.get("found")).toBe(true);

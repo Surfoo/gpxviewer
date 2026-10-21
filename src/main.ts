@@ -31,6 +31,7 @@ import {
   setAllowedTypes,
   setHideFound,
   setRange,
+  typesSharingIcon,
   typeToIconFile,
 } from "./map/styles";
 
@@ -306,38 +307,37 @@ map.on("pointermove", (event) => {
 
 const renderTypeFilter = (): void => {
   if (!typeFilterContainer) return;
+  // same groups and colours as the c:geo compact map icons
   const groups = [
+    { id: "green", color: "#388e3c", types: ["traditional cache"] },
+    { id: "orange", color: "#f57c00", types: ["multi-cache"] },
     {
-      id: "green",
-      color: "#1fa542",
-      types: ["traditional cache"],
-    },
-    {
-      id: "orange",
-      color: "#e8961a",
-      types: ["multi-cache"],
-    },
-    {
-      id: "red",
-      color: "#b0302b",
-      types: ["event cache", "cache in trash out event", "giga-event cache", "mega-event cache"],
+      id: "blue",
+      color: "#303f9f",
+      types: ["unknown cache", "wherigo cache", "letterbox hybrid"],
     },
     {
       id: "teal",
-      color: "#1ca3b8",
+      color: "#0288d1",
       types: ["earthcache", "virtual cache", "webcam cache"],
     },
     {
-      id: "blue",
-      color: "#0c6bcf",
+      id: "red",
+      color: "#d32f2f",
       types: [
-        "unknown cache",
-        "letterbox hybrid",
-        "wherigo cache",
-        "project ape cache",
-        "gps adventures exhibit",
+        "event cache",
+        "cache in trash out event",
+        "mega-event cache",
+        "giga-event cache",
+        "special event cache",
       ],
     },
+    {
+      id: "olive",
+      color: "#afb42b",
+      types: ["project ape cache", "groundspeak hq", "gps adventures exhibit"],
+    },
+    { id: "purple", color: "#7b1fa2", types: ["lab cache"] },
   ];
   const base = import.meta.env.BASE_URL ?? "/";
   typeFilterContainer.innerHTML = "";
@@ -389,7 +389,7 @@ const updateAllowedTypesFromUI = (): void => {
     group.querySelectorAll<HTMLElement>(".type-icon").forEach((icon) => {
       const type = icon.dataset.type ?? "";
       const iconEnabled = icon.dataset.enabled !== "false";
-      if (type && iconEnabled) selected.push(type.trim().toLowerCase());
+      if (type && iconEnabled) selected.push(...typesSharingIcon(type.trim().toLowerCase()));
     });
   });
   typeFilterContainer.querySelectorAll<HTMLElement>(".type-icon, .group-toggle").forEach((el) => {
