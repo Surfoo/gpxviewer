@@ -138,6 +138,17 @@ const { setPanelState } = initPanelToggle({
   },
 });
 
+// on a phone the open panel covers the whole map: close it before recentring
+const revealMap = (): void => {
+  if (isMobile.matches) setPanelState(true);
+};
+
+// width of the map hidden under the open sidebar
+const coveredLeft = (): number =>
+  layout?.dataset.panel === "expanded"
+    ? (document.querySelector<HTMLElement>("#import-panel")?.offsetWidth ?? 0)
+    : 0;
+
 const fitToData = (): boolean => {
   const extent = createEmpty();
   for (const source of [vectorSource, trackSource]) {
@@ -145,7 +156,10 @@ const fitToData = (): boolean => {
     if (sourceExtent && source.getFeatures().length > 0) extend(extent, sourceExtent);
   }
   if (isEmpty(extent)) return false;
-  map.getView().fit(extent, { padding: [32, 32, 32, 32], duration: 300, maxZoom: 15 });
+  // top: search field; left: sidebar when open
+  map
+    .getView()
+    .fit(extent, { padding: [56, 32, 32, 32 + coveredLeft()], duration: 300, maxZoom: 15 });
   return true;
 };
 
@@ -154,8 +168,8 @@ const addFeaturesToMap = (features: Feature<Point>[], sourceLabel: string): void
     vectorSource.addFeature(feature);
   });
   updateStats();
+  revealMap();
   fitToData();
-  if (isMobile.matches) setPanelState(true); // show the map right away
   setStatus(t("status.loaded", { source: sourceLabel, count: features.length }));
   refreshOverlayLayers();
 };
@@ -218,6 +232,7 @@ clearButton?.addEventListener("click", () => {
 
 focusButton?.addEventListener("click", () => {
   infoOverlay.hide();
+  revealMap();
   if (!fitToData()) setStatus(t("status.noExtent"), true);
 });
 
@@ -246,8 +261,12 @@ searchInput?.addEventListener("keydown", (event) => {
     setStatus(t("status.notFound", { query: searchInput.value.trim() }), true);
     return;
   }
+  revealMap();
   const view = map.getView();
-  view.animate({ center: coordinate, zoom: Math.max(view.getZoom() ?? 0, 16), duration: 300 });
+  const zoom = Math.max(view.getZoom() ?? 0, 16);
+  // centre in the part of the map the sidebar leaves visible
+  const shift = (coveredLeft() / 2) * view.getResolutionForZoom(zoom);
+  view.animate({ center: [coordinate[0] - shift, coordinate[1]], zoom, duration: 300 });
   infoOverlay.render(match, coordinate);
 });
 

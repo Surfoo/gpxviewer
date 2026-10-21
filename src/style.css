@@ -735,7 +735,7 @@ button.secondary {
   top: 8px;
   left: 50%;
   transform: translateX(-50%);
-  z-index: 10;
+  z-index: 5; /* under the sidebar (z-index 6) */
   width: min(360px, calc(100% - 140px));
   padding: 8px 12px;
   border-radius: 4px;

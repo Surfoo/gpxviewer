@@ -45,6 +45,7 @@ Run commands from the repo root. Dev and build use the base path `/gpxviewer/` (
 - Geolocation can be tested by overriding `navigator.geolocation.watchPosition` with a fake position.
 - If the page ignores a CSS change (computed style differs from the file), the dev server missed the edit: restart it before debugging the CSS.
 - Start the dev server with `--strictPort`: if the port is taken Vite silently moves to another one, and the browser then shows whatever else listens there (blank page).
+- Several dev servers share `node_modules/.vite`: stopping one while it is still optimising dependencies leaves a corrupt cache (blank page, 404 on `.vite/deps/chunk-*.js`). Load the page once before stopping a server; if it happens, delete `node_modules/.vite` and restart the server.
 - `pkill -f` in a shell chain kills the shell (exit code 144 here): start the dev server in the background and stop it on its own, never combined with other commands.
 
 ## Architecture & Gotchas
@@ -55,7 +56,7 @@ Run commands from the repo root. Dev and build use the base path `/gpxviewer/` (
 - i18n: every new string needs a key in all five locales (en, fr, de, es, it) in `src/i18n/translations.ts`.
 - Icons: use Lucide through `src/ui/icons.ts` (`icon` for DOM, `iconLabel` for OpenLayers control labels, which only accept `HTMLElement`). Lucide has no brand icons, so the GitHub logo is an inline SVG.
 - Basemaps: tile URLs rot. Check a tile with `curl` before adding one, prefer sources without a key, and add a thumbnail in `static/icons/basemaps/`.
-- Layout: the sidebar overlays a full-width map; the map must not resize or move when it collapses.
+- Layout: the sidebar overlays a full-width map; the map must not resize or move when it collapses. Anything that recentres or fits the map must leave room for the open sidebar (`coveredLeft()` in `main.ts`); on a phone it closes the sidebar first (`revealMap()`).
 
 ## Commit & Pull Request Guidelines
 - Use concise, imperative commits (e.g., `fix: handle empty cache size`, `docs: clarify build steps`); group unrelated changes separately.
