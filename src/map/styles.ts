@@ -61,20 +61,37 @@ export const setHideFound = (value: boolean): void => {
   hideFound = value;
 };
 
-export type RangeKey = "difficulty" | "terrain";
-const ranges: Record<RangeKey, [number, number]> = { difficulty: [1, 5], terrain: [1, 5] };
+// ordered container sizes; their rank (1-4) is what the size range filters on
+export const sizes = ["Micro", "Small", "Regular", "Large"];
+
+export type RangeKey = "difficulty" | "terrain" | "size";
+const ranges: Record<RangeKey, [number, number]> = {
+  difficulty: [1, 5],
+  terrain: [1, 5],
+  size: [1, sizes.length],
+};
 
 export const setRange = (key: RangeKey, min: number, max: number): void => {
   ranges[key] = [min, max];
 };
 
-// unknown ("?") difficulty/terrain stays visible
+const rangeValue = (feature: CacheFeature, key: RangeKey): number => {
+  if (key === "size") {
+    const rank = sizes.findIndex(
+      (size) => size.toLowerCase() === feature.get<string>("container")?.trim().toLowerCase(),
+    );
+    return rank < 0 ? Number.NaN : rank + 1;
+  }
+  return Number.parseFloat(feature.get<string>(key) ?? "");
+};
+
+// unknown ("?") difficulty/terrain and sizes outside the scale (virtual, other...) stay visible
 export const isFeatureVisible = (feature: CacheFeature): boolean => {
   const type = (feature.get<string>("type") ?? "Unknown Cache").trim().toLowerCase();
   if (allowedTypes && !allowedTypes.has(type)) return false;
   if (hideFound && feature.get<boolean>("found")) return false;
   return (Object.keys(ranges) as RangeKey[]).every((key) => {
-    const value = Number.parseFloat(feature.get<string>(key) ?? "");
+    const value = rangeValue(feature, key);
     return Number.isNaN(value) || (value >= ranges[key][0] && value <= ranges[key][1]);
   });
 };

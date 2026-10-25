@@ -34,6 +34,7 @@ import {
   setAllowedTypes,
   setHideFound,
   setRange,
+  sizes,
   typesSharingIcon,
   typeToIconFile,
 } from "./map/styles";
@@ -466,16 +467,20 @@ renderTypeFilter();
 updateAllowedTypesFromUI();
 initAbout();
 
-// difficulty/terrain: one min/max select pair per .range-filter
+// difficulty/terrain/size: one min/max select pair per .range-filter
 document.querySelectorAll<HTMLElement>(".range-filter").forEach((row) => {
   const key = row.dataset.key as RangeKey;
   const [minSelect, maxSelect] = Array.from(row.querySelectorAll<HTMLSelectElement>("select"));
-  const options = Array.from({ length: 9 }, (_, i) => 1 + i * 0.5)
-    .map((v) => `<option value="${v}">${v}</option>`)
+  const options = (
+    key === "size"
+      ? sizes.map((label, i) => ({ value: i + 1, label }))
+      : Array.from({ length: 9 }, (_, i) => ({ value: 1 + i * 0.5, label: `${1 + i * 0.5}` }))
+  )
+    .map(({ value, label }) => `<option value="${value}">${label}</option>`)
     .join("");
   minSelect.innerHTML = options;
   maxSelect.innerHTML = options;
-  maxSelect.value = "5";
+  maxSelect.value = String(key === "size" ? sizes.length : 5);
   const apply = (changed: HTMLSelectElement): void => {
     // keep min <= max by dragging the other bound along
     if (Number(minSelect.value) > Number(maxSelect.value)) {

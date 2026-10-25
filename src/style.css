@@ -690,6 +690,19 @@ button.secondary {
   gap: 6px;
 }
 
+.range-filter select {
+  flex: 1;
+  min-width: 0;
+  padding: 6px 4px;
+}
+
+/* difficulty and terrain side by side */
+.filter-pair {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
 /* toggle switch on top of the native checkbox */
 .checkbox input[type="checkbox"] {
   appearance: none;

@@ -19,6 +19,7 @@ beforeEach(() => {
   setHideFound(false);
   setRange("difficulty", 1, 5);
   setRange("terrain", 1, 5);
+  setRange("size", 1, 4);
 });
 
 describe("isSupportedCacheType", () => {
@@ -61,6 +62,16 @@ describe("isFeatureVisible", () => {
   it("keeps caches with unknown difficulty or terrain visible", () => {
     setRange("difficulty", 4, 5);
     expect(isFeatureVisible(cache({ difficulty: "?", terrain: "?" }))).toBe(true);
+  });
+
+  it("filters on the ordered size scale and keeps other sizes visible", () => {
+    setRange("size", 2, 3); // Small to Regular
+    expect(isFeatureVisible(cache({ container: "Small" }))).toBe(true);
+    expect(isFeatureVisible(cache({ container: "regular" }))).toBe(true);
+    expect(isFeatureVisible(cache({ container: "Micro" }))).toBe(false);
+    expect(isFeatureVisible(cache({ container: "Large" }))).toBe(false);
+    expect(isFeatureVisible(cache({ container: "Virtual" }))).toBe(true);
+    expect(isFeatureVisible(cache({}))).toBe(true);
   });
 });
 
