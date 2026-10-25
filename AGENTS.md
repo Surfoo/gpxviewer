@@ -36,7 +36,7 @@ Run commands from the repo root. Dev and build use the base path `/gpxviewer/` (
 - Asset files follow the existing pattern (`type_*.png`, control icons); keep filenames lowercase with dashes/underscores for readability. Keep source assets in `static/`, not in `public/`.
 
 ## Testing Guidelines
-- Unit tests (Vitest + jsdom) sit next to the code as `*.test.ts` and cover pure logic only: GPX parsing, filters (`isFeatureVisible`), coordinate formatting, settings. Add or update tests when touching that logic; keep map/DOM wiring out of them.
+- Unit tests (Vitest + jsdom) sit next to the code as `*.test.ts` and cover pure logic only: GPX parsing, filters (`isFeatureVisible`), coordinate formatting, search ranking, settings. Add or update tests when touching that logic; keep map/DOM wiring out of them.
 - Run `npm test`, `npx tsc --noEmit`, `npx biome check src` and `npm run build` before declaring work done. The CI (`.github/workflows/check.yml`) runs lint (read-only, it fails instead of fixing), type check, tests and build; `deploy.yml` runs it first and only deploys if it passes.
 - UI changes are verified manually in the browser: `npm run dev`, load a GPX via the UI (file or URL), zoom/pan, open popups, toggle filters, test the sidebar, basemap picker and location controls.
 - For data parsing changes, exercise multiple GPX samples (found vs unfound caches, tracks/routes, non-cache waypoints, different sizes).

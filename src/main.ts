@@ -16,6 +16,7 @@ import type { CacheFeature } from "@/types";
 import { initAbout } from "@/ui/about";
 import { initI18nDom } from "@/ui/i18nDom";
 import { initPanelToggle } from "@/ui/panel";
+import { initSearchBox } from "@/ui/searchBox";
 import { loadSettings, saveSetting } from "@/ui/settings";
 import { initState } from "@/ui/state";
 import { applyDocumentLanguage, t } from "./i18n";
@@ -244,31 +245,30 @@ hideFoundCheckbox?.addEventListener("change", () => {
 });
 
 // Enter in the search box: exact code first, then partial code, then name
-const searchInput = document.querySelector<HTMLInputElement>("#search");
-searchInput?.addEventListener("keydown", (event) => {
-  if (event.key !== "Enter") return;
-  const query = searchInput.value.trim().toLowerCase();
-  if (!query) return;
-  const visible = (vectorSource.getFeatures() as CacheFeature[]).filter(isFeatureVisible);
-  const code = (f: CacheFeature) => (f.get<string>("code") ?? "").toLowerCase();
-  const name = (f: CacheFeature) => (f.get<string>("name") ?? "").toLowerCase();
-  const match =
-    visible.find((f) => code(f) === query) ??
-    visible.find((f) => code(f).includes(query)) ??
-    visible.find((f) => name(f).includes(query));
-  const coordinate = match?.getGeometry()?.getCoordinates();
-  if (!match || !coordinate) {
-    setStatus(t("status.notFound", { query: searchInput.value.trim() }), true);
-    return;
-  }
+const goToCache = (feature: CacheFeature): void => {
+  const coordinate = feature.getGeometry()?.getCoordinates();
+  if (!coordinate) return;
   revealMap();
   const view = map.getView();
   const zoom = Math.max(view.getZoom() ?? 0, 16);
   // centre in the part of the map the sidebar leaves visible
   const shift = (coveredLeft() / 2) * view.getResolutionForZoom(zoom);
   view.animate({ center: [coordinate[0] - shift, coordinate[1]], zoom, duration: 300 });
-  infoOverlay.render(match, coordinate);
-});
+  infoOverlay.render(feature, coordinate);
+};
+
+const searchInput = document.querySelector<HTMLInputElement>("#search");
+const searchResults = document.querySelector<HTMLUListElement>("#search-results");
+if (searchInput && searchResults) {
+  initSearchBox({
+    input: searchInput,
+    list: searchResults,
+    // only the caches the filters leave visible
+    getFeatures: () => (vectorSource.getFeatures() as CacheFeature[]).filter(isFeatureVisible),
+    onSelect: goToCache,
+    onNotFound: (query) => setStatus(t("status.notFound", { query }), true),
+  });
+}
 
 if (displayLabelsCheckbox) displayLabelsCheckbox.checked = settings.displayLabels ?? false;
 if (displayPerimetersCheckbox)

@@ -562,6 +562,83 @@ button.secondary {
   border: none;
 }
 
+.search-box {
+  position: absolute;
+  top: 8px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 5; /* under the sidebar (z-index 6) */
+  width: min(360px, calc(100% - 140px));
+}
+
+#search {
+  width: 100%;
+  padding: 8px 12px;
+  border-radius: 4px;
+  border: 1px solid var(--border);
+  background: rgba(255, 255, 255, 0.95);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.15);
+  color: var(--text);
+  font: inherit;
+  font-size: 0.85rem;
+}
+
+.search-results {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  right: 0;
+  max-height: 50vh;
+  overflow-y: auto;
+  margin: 0;
+  padding: 4px;
+  list-style: none;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.18);
+  font-size: 0.85rem;
+}
+
+.search-results[hidden] {
+  display: none;
+}
+
+.search-results li {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 8px 10px;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+.search-results li.is-active,
+.search-results li:hover {
+  background: #e8f1e5;
+}
+
+.search-name {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.search-code {
+  flex: none;
+  color: var(--muted);
+}
+
+.search-results li.search-more {
+  color: var(--muted);
+  cursor: default;
+}
+
+.search-results li.search-more:hover {
+  background: none;
+}
+
 @media (max-width: 640px) {
   /* the sidebar stays a drawer over the full-screen map */
   .layout,
@@ -728,23 +805,6 @@ button.secondary {
 .icon-button svg {
   display: block;
   margin: auto;
-}
-
-#search {
-  position: absolute;
-  top: 8px;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 5; /* under the sidebar (z-index 6) */
-  width: min(360px, calc(100% - 140px));
-  padding: 8px 12px;
-  border-radius: 4px;
-  border: 1px solid var(--border);
-  background: rgba(255, 255, 255, 0.95);
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.15);
-  color: var(--text);
-  font: inherit;
-  font-size: 0.85rem;
 }
 
 .copy-coords {

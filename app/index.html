@@ -118,14 +118,27 @@
 
         <section class="map-shell">
           <div id="map"></div>
-          <input
-            id="search"
-            type="search"
-            spellcheck="false"
-            autocomplete="off"
-            data-i18n-placeholder="placeholder.search"
-            data-i18n-aria-label="placeholder.search"
-          />
+          <div class="search-box">
+            <input
+              id="search"
+              type="search"
+              spellcheck="false"
+              autocomplete="off"
+              role="combobox"
+              aria-autocomplete="list"
+              aria-controls="search-results"
+              aria-expanded="false"
+              data-i18n-placeholder="placeholder.search"
+              data-i18n-aria-label="placeholder.search"
+            />
+            <ul
+              id="search-results"
+              class="search-results"
+              role="listbox"
+              hidden
+              data-i18n-aria-label="placeholder.search"
+            ></ul>
+          </div>
           <div id="status" class="status" role="status" data-i18n="status.ready"></div>
 
           <div id="popup" class="ol-popup">
