@@ -801,10 +801,15 @@ button.secondary {
   width: auto;
 }
 
-.ol-control button svg,
-.icon-button svg {
+.ol-control button svg {
   display: block;
   margin: auto;
+}
+
+/* flex already centres it: auto margins would push the icon away from its label */
+.icon-button svg {
+  display: block;
+  flex: none;
 }
 
 .copy-coords {

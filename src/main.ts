@@ -1,6 +1,7 @@
 import "ol/ol.css";
 import "./style.css";
 
+import { Download, Focus, Trash2 } from "lucide";
 import type { Coordinate } from "ol/coordinate";
 import { createEmpty, extend, isEmpty } from "ol/extent";
 import type Feature from "ol/Feature";
@@ -15,6 +16,7 @@ import { createInfoOverlay } from "@/map/overlays";
 import type { CacheFeature } from "@/types";
 import { initAbout } from "@/ui/about";
 import { initI18nDom } from "@/ui/i18nDom";
+import { icon } from "@/ui/icons";
 import { initPanelToggle } from "@/ui/panel";
 import { initSearchBox } from "@/ui/searchBox";
 import { loadSettings, saveSetting } from "@/ui/settings";
@@ -44,6 +46,10 @@ const loadUrlButton = document.querySelector<HTMLButtonElement>("#load-url");
 const fileInput = document.querySelector<HTMLInputElement>("#gpx-file");
 const clearButton = document.querySelector<HTMLButtonElement>("#clear-map");
 const focusButton = document.querySelector<HTMLButtonElement>("#fit-data");
+// the label lives in a span so a language change leaves the icon alone
+loadUrlButton?.prepend(icon(Download));
+focusButton?.prepend(icon(Focus));
+clearButton?.prepend(icon(Trash2));
 const displayLabelsCheckbox = document.querySelector<HTMLInputElement>("#display-labels");
 const displayPerimetersCheckbox = document.querySelector<HTMLInputElement>("#display-perimeters");
 const typeFilterContainer = document.querySelector<HTMLDivElement>("#type-filter");
